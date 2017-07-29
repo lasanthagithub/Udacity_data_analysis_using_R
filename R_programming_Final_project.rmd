@@ -208,12 +208,9 @@ significantly higher than the corresponding third quartile. However, to veryfy w
 
 ### Bivariate Plots Section
 
+From the univariant analysis in the above section reflects some insights of individual atributes in the dataset. In this section correlations between the atributes are investigated. 
 
-> **Tip**: Based on what you saw in the univariate plots, what relationships
-between variables might be interesting to look at in this section? Don't limit
-yourself to relationships between a main output feature and one of the
-supporting variables. Try to look at relationships between supporting variables
-as well.
+In order to understand the relationships between the atributes, following coorellation plots matrixs was generated. The matrix of plots are advantageous, because, all the relationships if any can be eaily identified. Therefore, further analysis can be easily implemented. 
 
 ```{r echo=FALSE, Bivariate_Plots, fig.height=9, fig.width=9, warning=FALSE, message=FALSE}
 
@@ -223,7 +220,9 @@ ggpairs(win_data[2:13])
 
 ```
 
-# Bivariate Analysis
+In the above matrix of plots, scatter plots were shown each atributes to others at the lower part of the diogonal. I the upper part, the corresponding correlation coefficients are shown. Along the diogonals the density plots are displayed.  
+
+### Bivariate Analysis
 
 > **Tip**: As before, summarize what you found in your bivariate explorations
 here. Use the questions below to guide your discussion.
