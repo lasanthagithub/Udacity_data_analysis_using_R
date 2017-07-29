@@ -117,15 +117,11 @@ head(win_data)
 A summary of the main attributes are given below. 
 
 ```{r, echo=FALSE}
-summary(win_data[2:12])
+#summary(win_data[2:12])
 
 ```
 
-```{r, echo=FALSE}
-win_data[, 'quality'] <- as.factor(win_data[, 'quality'])
-summary(win_data[2:13])
 
-```
 
 
 
@@ -186,39 +182,32 @@ grid.arrange(p1, p2, p3,p4, p5, p6, p7, p8, p9, p10, p11, p12, ncol = 3)
 
 ```
 
+
+All the atributes in the dataset are numerical. However, The quality attribute 
+was factorized, because the quality atribute is used to rank the qualty.
+
+### Univariate Analysis
+
 Based on the above grid of histograms and barchart, it is obvious that all the 
 measured parameters for white wine are more or less normally distributed except 
-'residual sugar' which is left skewed.
+'residual sugar' which is left skewed. The distribution of pH is perfect normal distribution. 
+
+The following summary shows the main descriptive statistics of the atributes.
 
 
+```{r, echo=FALSE}
+win_data[, 'quality'] <- as.factor(win_data[, 'quality'])
+summary(win_data[2:13])
 
-> **Tip**: Make sure that you leave a blank line between the start / end of
-each code block and the end / start of your Markdown text so that it is
-formatted nicely in the knitted text. Note as well that text on consecutive
-lines is treated as a single space. Make sure you have a blank line between
-your paragraphs so that they too are formatted for easy readability.
-
-# Univariate Analysis
-
-> **Tip**: Now that you've completed your univariate explorations, it's time to
-reflect on and summarize what you've found. Use the questions below to help you
-gather your observations and add your own if you have other thoughts!
-
-### What is the structure of your dataset?
-
-### What is/are the main feature(s) of interest in your dataset?
-
-### What other features in the dataset do you think will help support your \
-investigation into your feature(s) of interest?
-
-### Did you create any new variables from existing variables in the dataset?
-
-### Of the features you investigated, were there any unusual distributions? \
-Did you perform any operations on the data to tidy, adjust, or change the form \
-of the data? If so, why did you do this?
+```
 
 
-# Bivariate Plots Section
+Based on the above summary statistics, some outlier like data points can be observed specially for the atributes - residual.sugar, free.sulfur.dioxide and total.sulfur.dioxide. In this three atributes, the maximum value are 
+significantly higher than the corresponding third quartile. However, to veryfy whether these max pointes are outlieers or not, a detailed analysis are required. Also, the stitistcs show that the majority of white wines fall into 5 and 6 quality categories.  
+
+
+### Bivariate Plots Section
+
 
 > **Tip**: Based on what you saw in the univariate plots, what relationships
 between variables might be interesting to look at in this section? Don't limit
@@ -226,16 +215,11 @@ yourself to relationships between a main output feature and one of the
 supporting variables. Try to look at relationships between supporting variables
 as well.
 
-```{r echo=FALSE, Bivariate_Plots, fig.height= 9, fig.width= 9}
-#scatterplotMatrix(win_dat[2:12],diagonal="histogram",smooth=FALSE)
+```{r echo=FALSE, Bivariate_Plots, fig.height=9, fig.width=9, warning=FALSE, message=FALSE}
 
-#library(PerformanceAnalytics)
-#chart.Correlation(win_dat[2:13], histogram=TRUE, pch=19)
+ggpairs(win_data[2:13]) 
 
-
-#ggpairs(win_data[2:12], aes(alpha = 0.01)) #+ geom_point(size = 2)
-
-ggpairs(win_data[2:13], upper = list(continuous = "cor", combo = "dot", discrete ="facetbar", na = "na"), lower = list(continuous = "points", combo = "facethist", discrete = "facetbar", na = "na"), diag = list(continuous =  "densityDiag", discrete = "barDiag", na = "naDiag"), xlab = NULL, ylab = NULL, axisLabels = c("show", "internal", "none"))
+#ggpairs(win_data[2:13], upper = list(continuous = "cor", combo = "dot", discrete ="facetbar", na = "na"), lower = list(continuous = "points", combo = "facethist", discrete = "facetbar", na = "na"), diag = list(continuous =  "densityDiag", discrete = "barDiag", na = "naDiag"), xlab = NULL, ylab = NULL, axisLabels = c("show", "internal", "none"))
 
 ```
 
