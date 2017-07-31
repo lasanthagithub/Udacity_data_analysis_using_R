@@ -224,6 +224,8 @@ In the above matrix of plots, scatter plots were shown each atributes to others 
 
 ### Bivariate Analysis
 
+As noticed in the univarient analysis above, there seems to be a few outliers observable in the datset. For example, the atribute sulfur.dioxide concentation related plots contains one or more data points that have extream values.
+
 > **Tip**: As before, summarize what you found in your bivariate explorations
 here. Use the questions below to guide your discussion.
 
