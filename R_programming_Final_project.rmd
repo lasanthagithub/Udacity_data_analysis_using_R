@@ -220,7 +220,10 @@ ggpairs(win_data[2:13])
 
 ```
 
-In the above matrix of plots, scatter plots were shown each atributes to others at the lower part of the diogonal. I the upper part, the corresponding correlation coefficients are shown. Along the diogonal the density plots are displayed for each atribute.    
+In the above matrix of plots, scatter plots were shown each atributes to others 
+at the lower part of the diogonal. I the upper part, the corresponding 
+correlation coefficients are shown. Along the diogonal the density plots are 
+displayed for each atribute.    
 
 ### Bivariate Analysis
 ```{r,echo=FALSE, Bivariate_Plots, fig.height=9, fig.width=9, warning=FALSE, message=FALS}
@@ -238,44 +241,98 @@ Let's look at each relationship seperately.
 
 ```{r,echo=FALSE, Bivariate_Plots, warning=FALSE, message=FALS}
 
-p1 = ggplot(aes(x = alcohol, y = density, color = quality ), data = win_data) + 
+p1 = ggplot(aes(x = alcohol, y = density ), data = win_data) + 
         geom_point()+
         ylab("Density (g/cm^3)") +
         xlab("Alcohol %") +
-        ggtitle("Alcohol % vs density") + 
-        theme(plot.title = element_text(size=12, hjust=0))
-p1
+        ggtitle("Alcohol % vs density: R^2= -0.78") + 
+        theme(plot.title = element_text(size=10, hjust=0.5),
+              axis.title = element_text(size=10, hjust=0.5))
 
 
 p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data) + 
-        geom_point(color = 'black', fill = '#F79420')+
+        geom_point()+
         ylab("Density (g/cm^3)") +
         xlab("Residual sugar concentration (g/dm^3)") +
-        ggtitle(" Residual sugar vs Wine")
+        ggtitle(" Residual sugar vs Wine: R^2= 0.84")+ 
+        theme(plot.title = element_text(size=10, hjust=0.5),
+              axis.title = element_text(size=10, hjust=0.5))
 
 
-p3 = ggplot(aes(x = total.sulfur.dioxide, y = density ), data = win_data) + 
+p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data) + 
         geom_point() +
         xlab("Total sulfur dioxide (g/dm^3)") +
         ylab("Density (g/cm^3)") +
-        ggtitle("Total sulfur dioxide vs density")
+        ggtitle("Total sulfur dioxide vs density: R^2= 0.53")+ 
+        theme(plot.title = element_text(size=10, hjust=0.5),
+              axis.title = element_text(size=10, hjust=0.5))
 
 
 
-p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide ), data = win_data) + 
+p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), data = win_data) + 
         geom_point() +
         xlab("Total sulfur dioxide (g/dm^3)") +
         ylab("Free sulfur dioxide (g/dm^3)") +
-        ggtitle("Total vs free sulfur dioxide")
+        ggtitle("Total vs free sulfur dioxide") + #, subtitle = "R^2= 0.62")+ 
+        theme(plot.title = element_text(size=10, hjust=0.5),
+              axis.title = element_text(size=10, hjust=0.5))
 
 grid.arrange(p1, p2, p3, p4, ncol = 2)
 ```
 
+The data distribution in above plots shows faily good correlations with R^2 > 0.5.
+
+As noticed in the univarient analysis in the previous section, there seems to be
+a few outliers observable in the datset. Generally, in standaed conditions the 
+density of water is 1.00 g/cm^3. Therefore, the density of a solution in which 
+water is the solvent, should be slightly less than 1.00 g/cm^3. In the above 
+plots we can observe two density values greater tahn 1.00 g/cm^3. Therefore, we 
+can remove those outliers from the dataset. Folowing plots were generated without
+the density outliers. Also, extreame valus for sulfur dioxides can be removed.
 
 
+```{r,echo=FALSE, Bivariate_Plots, warning=FALSE, message=FALS}
+
+win_data1 = win_data[win_data$density < 1.00,]
+
+p1 = ggplot(aes(x = alcohol, y = density ), data = win_data1) + 
+        geom_point()+
+        ylab("Density (g/cm^3)") +
+        xlab("Alcohol %") +
+        ggtitle("Alcohol % vs density: R^2= -0.78") + 
+        theme(plot.title = element_text(size=10, hjust=0.5),
+              axis.title = element_text(size=10, hjust=0.5))
 
 
-As noticed in the univarient analysis above, there seems to be a few outliers observable in the datset. For example, the atribute sulfur.dioxide concentation related plots contains one or more data points that have extream values.
+p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data1) + 
+        geom_point()+
+        ylab("Density (g/cm^3)") +
+        xlab("Residual sugar concentration (g/dm^3)") +
+        ggtitle(" Residual sugar vs Wine: R^2= 0.84")+ 
+        theme(plot.title = element_text(size=10, hjust=0.5),
+              axis.title = element_text(size=10, hjust=0.5))
+
+
+p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data1) + 
+        geom_point() +
+        xlab("Total sulfur dioxide (g/dm^3)") +
+        ylab("Density (g/cm^3)") +
+        ggtitle("Total sulfur dioxide vs density: R^2= 0.53")+ 
+        theme(plot.title = element_text(size=10, hjust=0.5),
+              axis.title = element_text(size=10, hjust=0.5))
+
+win_data2 = win_data[win_data$free.sulfur.dioxide < 200,]
+
+p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), data = win_data2) + 
+        geom_point() +
+        xlab("Total sulfur dioxide (g/dm^3)") +
+        ylab("Free sulfur dioxide (g/dm^3)") +
+        ggtitle("Total vs free sulfur dioxide") + #, subtitle = "R^2= 0.62")+ 
+        theme(plot.title = element_text(size=10, hjust=0.5),
+              axis.title = element_text(size=10, hjust=0.5))
+
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+```
 
 > **Tip**: As before, summarize what you found in your bivariate explorations
 here. Use the questions below to guide your discussion.
