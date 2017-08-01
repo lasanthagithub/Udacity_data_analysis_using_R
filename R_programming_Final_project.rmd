@@ -220,9 +220,22 @@ ggpairs(win_data[2:13])
 
 ```
 
-In the above matrix of plots, scatter plots were shown each atributes to others at the lower part of the diogonal. I the upper part, the corresponding correlation coefficients are shown. Along the diogonals the density plots are displayed.  
+In the above matrix of plots, scatter plots were shown each atributes to others at the lower part of the diogonal. I the upper part, the corresponding correlation coefficients are shown. Along the diogonal the density plots are displayed for each atribute.    
 
 ### Bivariate Analysis
+```{r,echo=FALSE, Bivariate_Plots, fig.height=9, fig.width=9, warning=FALSE, message=FALS}
+#coreletion = cor(win_data[2:12])
+#coreletion = coreletion[coreletion > 0.5]
+#coreletion
+```
+When examine the correlation coeffient for each relationship, some of the 
+atributes seems to be high to moderately coorelated each other. For example, 
+corellation coefficients of, alcohol vs density, residual.sugar vs density, total.sulfur.dioxide vs density, total.sulfur.dioxide vs free.sulfur.dioxide are -0.78, 0.84, 0.53 and 0.62, repectively.
+
+
+
+
+
 
 As noticed in the univarient analysis above, there seems to be a few outliers observable in the datset. For example, the atribute sulfur.dioxide concentation related plots contains one or more data points that have extream values.
 
