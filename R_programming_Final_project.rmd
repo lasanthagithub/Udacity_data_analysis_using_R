@@ -230,8 +230,23 @@ In the above matrix of plots, scatter plots were shown each atributes to others 
 ```
 When examine the correlation coeffient for each relationship, some of the 
 atributes seems to be high to moderately coorelated each other. For example, 
-corellation coefficients of, alcohol vs density, residual.sugar vs density, total.sulfur.dioxide vs density, total.sulfur.dioxide vs free.sulfur.dioxide are -0.78, 0.84, 0.53 and 0.62, repectively.
+corellation coefficients of, alcohol vs density, residual.sugar vs density, total
+.sulfur.dioxide vs density, total.sulfur.dioxide vs free.sulfur.dioxide are 
+-0.78, 0.84, 0.53 and 0.62, repectively.
 
+Let's look at each relationship seperately.
+
+```{r,echo=FALSE, Bivariate_Plots, warning=FALSE, message=FALS}
+
+p1 = ggplot(aes(x = alcohol, y = density ), data = win_data) + 
+        geom_point(color = 'black', fill = '#F79420')
+
+p2 = ggplot(aes(x = quality, y = alcohol ), data = win_data) + 
+        geom_point(color = 'black', fill = '#F79420')
+p1
+
+
+```
 
 
 
