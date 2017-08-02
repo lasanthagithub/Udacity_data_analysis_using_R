@@ -241,43 +241,54 @@ Let's look at each relationship seperately.
 
 ```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=5}
 
+x = win_data$alcohol
+y = win_data$density
 p1 = ggplot(aes(x = alcohol, y = density ), data = win_data) + 
         geom_point()+
         ylab("Density (g/cm^3)") +
         xlab("Alcohol %") +
-        ggtitle("Alcohol % vs density: R^2= -0.78") + 
-        theme(plot.title = element_text(size=10, hjust=0.5),
+        ggtitle("Alcohol % vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
 
-
+x = win_data$residual.sugar
+y = win_data$density
 p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data) + 
         geom_point()+
         ylab("Density (g/cm^3)") +
         xlab("Residual sugar concentration (g/dm^3)") +
-        ggtitle(" Residual sugar vs Wine: R^2= 0.84")+ 
-        theme(plot.title = element_text(size=10, hjust=0.5),
+        ggtitle(" Residual sugar vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
-
+x = win_data$total.sulfur.dioxide
+y = win_data$density
 
 p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data) + 
         geom_point() +
         xlab("Total sulfur dioxide (g/dm^3)") +
         ylab("Density (g/cm^3)") +
-        ggtitle("Total sulfur dioxide vs density: R^2= 0.53")+ 
-        theme(plot.title = element_text(size=10, hjust=0.5),
+        ggtitle("Total sulfur dioxide vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
 
 
-
+y = win_data$free.sulfur.dioxide 
+x = win_data$total.sulfur.dioxide
 p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), data = win_data) + 
         geom_point() +
         xlab("Total sulfur dioxide (g/dm^3)") +
         ylab("Free sulfur dioxide (g/dm^3)") +
-        ggtitle("Total vs free sulfur dioxide") + #, subtitle = "R^2= 0.62")+ 
-        theme(plot.title = element_text(size=10, hjust=0.5),
+        ggtitle("Total vs free sulfur dioxide", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+ 
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
 
 grid.arrange(p1, p2, p3, p4, ncol = 2)
+
+
 ```
 
 The data distribution in above plots shows faily good correlations with R^2 > 0.5.
@@ -316,10 +327,12 @@ p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data1) +
                 subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
         theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
-x = win_data1$total.sulfur.dioxide
-y = win_data1$density
 
-p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data1) + 
+win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
+x = win_data2$total.sulfur.dioxide
+y = win_data2$density
+
+p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data2) + 
         geom_point() +
         xlab("Total sulfur dioxide (g/dm^3)") +
         ylab("Density (g/cm^3)") +
@@ -328,11 +341,11 @@ p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data1) +
         theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
 
-win_data2 = win_data[win_data$free.sulfur.dioxide < 200,]
+win_data3 = win_data2[win_data2$free.sulfur.dioxide < 200,]
 
-y = win_data2$free.sulfur.dioxide 
-x = win_data2$total.sulfur.dioxide
-p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), data = win_data2) + 
+y = win_data3$free.sulfur.dioxide 
+x = win_data3$total.sulfur.dioxide
+p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), data = win_data3) + 
         geom_point() +
         xlab("Total sulfur dioxide (g/dm^3)") +
         ylab("Free sulfur dioxide (g/dm^3)") +
@@ -346,6 +359,12 @@ grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 ```
 
+Now the data distrbution and the visuabilty of the plots are improved. In adition,
+in alcohol % vs density and density vas total sulfur dioxide relationships, 
+correlation coeeficient are sligtly improved. For the other relationships, 
+taking outliers off, did not improve the correlation.
+
+### Multivariate Plots Section
 
 Now its time to check how these relationships (in above bivarient plots) affect
 to the wine quality. Folowwing plots difrentshiate the atributes by quality 
@@ -377,7 +396,7 @@ win_data1 = win_data[win_data$density < 1.00,]
 x = win_data1$alcohol
 y = win_data1$density
 p1 = ggplot(aes(x = alcohol, y = density),  data = win_data1) + 
-        geom_point(aes(colour = Rank))+
+        geom_point(aes(colour = Rank), alpha = 1/3, position = position_jitter(h = 0))+
         ylab("Density (g/cm^3)") +
         xlab("Alcohol %") +
         ggtitle("Alcohol % vs density", 
@@ -388,18 +407,20 @@ p1 = ggplot(aes(x = alcohol, y = density),  data = win_data1) +
 x = win_data1$residual.sugar
 y = win_data1$density
 p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data1) + 
-        geom_point(aes(colour = Rank))+
+        geom_point(aes(colour = Rank), alpha = 1/3, position = position_jitter(h = 0))+
         ylab("Density (g/cm^3)") +
         xlab("Residual sugar concentration (g/dm^3)") +
         ggtitle(" Residual sugar vs density", 
                 subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
         theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
-x = win_data1$total.sulfur.dioxide
-y = win_data1$density
 
-p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data1) + 
-        geom_point(aes(colour = Rank)) +
+win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
+x = win_data2$total.sulfur.dioxide
+y = win_data2$density
+
+p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data2) + 
+        geom_point(aes(colour = Rank),alpha = 1/3, position = position_jitter(h = 0)) +
         xlab("Total sulfur dioxide (g/dm^3)") +
         ylab("Density (g/cm^3)") +
         ggtitle("Total sulfur dioxide vs density", 
@@ -407,12 +428,12 @@ p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data1) +
         theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
 
-win_data2 = win_data[win_data$free.sulfur.dioxide < 200,]
+win_data3 = win_data2[win_data2$free.sulfur.dioxide < 200,]
 
-y = win_data2$free.sulfur.dioxide 
-x = win_data2$total.sulfur.dioxide
-p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), data = win_data2) + 
-        geom_point(aes(colour = Rank)) +
+y = win_data3$free.sulfur.dioxide 
+x = win_data3$total.sulfur.dioxide
+p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), data = win_data3) + 
+        geom_point(aes(colour = Rank), alpha = 1/3, position = position_jitter(h = 0)) +
         xlab("Total sulfur dioxide (g/dm^3)") +
         ylab("Free sulfur dioxide (g/dm^3)") +
         ggtitle("Total vs free sulfur dioxide", 
@@ -479,7 +500,7 @@ make sure you justify why you chose each plot by describing what it shows.
 
 ### Plot One
 ```{r echo=FALSE, Plot_One}
-
+p1
 ```
 
 ### Description One
@@ -487,7 +508,7 @@ make sure you justify why you chose each plot by describing what it shows.
 
 ### Plot Two
 ```{r echo=FALSE, Plot_Two}
-
+p2
 ```
 
 ### Description Two
@@ -495,9 +516,9 @@ make sure you justify why you chose each plot by describing what it shows.
 
 ### Plot Three
 ```{r echo=FALSE, Plot_Three}
+p3 
 
 ```
-
 ### Description Three
 
 ------
