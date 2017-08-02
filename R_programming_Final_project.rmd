@@ -521,23 +521,42 @@ p3
 ```
 
 ```{r echo=FALSE, multiple linier regression}
-# Multiple Linear Regression Example 
-fit <- lm(y ~ x1 + x2 + x3, data=mydata)
-summary(fit) # show results
+# Multiple Linear Regression 
+fit <- lm(density ~ total.sulfur.dioxide + residual.sugar + alcohol, data=win_data3)
+summary(fit) # show the summary of results
 
-# Other useful functions 
-coefficients(fit) # model coefficients
-confint(fit, level=0.95) # CIs for model parameters 
-fitted(fit) # predicted values
-residuals(fit) # residuals
-anova(fit) # anova table 
-vcov(fit) # covariance matrix for model parameters 
-influence(fit) # regression diagnostics
+#coefficients(fit) # model coefficients
+#confint(fit, level=0.95) # CIs for model parameters 
+#fitted(fit) # predicted values
+#residuals(fit) # residuals
+#anova(fit) # anova table 
+#vcov(fit) # covariance matrix for model parameters 
+#influence(fit) # regression diagnostics
+```
 
+```{r echo=FALSE, multiple linier regression}
+par(mfrow =c(2,2))
+plot(fit)
 ```
 
 
+```{r echo=FALSE, multiple linier regression}
 
+  
+intercept =  1.004e+00
+coef1 =  5.861e-06  
+coef2 =  3.233e-04  
+coef3 = -1.192e-03
+
+
+win_data3$combine_var = win_data3$total.sulfur.dioxide*(coef1) +
+    win_data3$residual.sugar*(coef2) +
+    win_data3$alcohol*(coef3) +intercept
+
+win_data3$combine_var
+
+
+```
 ### Description Three
 
 ------
