@@ -520,7 +520,7 @@ p3
 
 ```
 
-```{r echo=FALSE, multiple linier regression}
+```{r echo=FALSE, multiple_linearr_regression0}
 # Multiple Linear Regression 
 fit <- lm(density ~ total.sulfur.dioxide + residual.sugar + alcohol, data=win_data3)
 summary(fit) # show the summary of results
@@ -534,29 +534,38 @@ summary(fit) # show the summary of results
 #influence(fit) # regression diagnostics
 ```
 
-```{r echo=FALSE, multiple linier regression}
+```{r echo=FALSE, multiple_linearr_regression1}
 par(mfrow =c(2,2))
 plot(fit)
 ```
 
 
-```{r echo=FALSE, multiple linier regression}
-
-  
+```{r echo=FALSE, multiple_linearr_regression2}
+## generating a new variable (predicted density)
 intercept =  1.004e+00
 coef1 =  5.861e-06  
 coef2 =  3.233e-04  
 coef3 = -1.192e-03
 
 
-win_data3$combine_var = win_data3$total.sulfur.dioxide*(coef1) +
+win_data3$predict_density = win_data3$total.sulfur.dioxide*(coef1) +
     win_data3$residual.sugar*(coef2) +
     win_data3$alcohol*(coef3) +intercept
 
-win_data3$combine_var
-
 
 ```
+
+```{r echo=FALSE, multiple_linearr_regression3}
+fit2 = lm(predict_density ~ density, data = win_data3)
+ggplot(aes(density , predict_density), data = win_data3) +
+    geom_point(aes(color= Rank), alpha = 1/3, position =
+                   position_jitter(h = 0)) +
+    geom_abline(intercept = coef(fit2)[1], slope = coef(fit2)[2], col='blue') +
+    xlab("Density (g/cm^3)") +
+    ylab("Predicted density (g/cm^3)") 
+
+```
+
 ### Description Three
 
 ------
