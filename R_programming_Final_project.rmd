@@ -446,79 +446,54 @@ grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 ```
 
+The above four plots show, how the quality (Rank) of wine behave with diffrent
+parameters. The observations of the plots are given below except the bottom right
+plot (Total vs free sulfur dioxide concentrations) where, there is no udentifiable 
+patterns in the wine quality with corresponding to x and y axis parameters 
+changing. In the other plots there are visible wine quality patters can be seen. 
 
 
+### Multivariate Analysis
 
-> **Tip**: As before, summarize what you found in your bivariate explorations
-here. Use the questions below to guide your discussion.
-
-### Talk about some of the relationships you observed in this part of the \
-investigation. How did the feature(s) of interest vary with other features in \
-the dataset?
-
-### Did you observe any interesting relationships between the other features \
-(not the main feature(s) of interest)?
-
-### What was the strongest relationship you found?
-
-
-# Multivariate Plots Section
-
-> **Tip**: Now it's time to put everything together. Based on what you found in
-the bivariate plots section, create a few multivariate plots to investigate
-more complex interactions between variables. Make sure that the plots that you
-create here are justified by the plots you explored in the previous section. If
-you plan on creating any mathematical models, this is the section where you
-will do that.
-
-```{r echo=FALSE, Multivariate_Plots}
-
-```
-
-# Multivariate Analysis
-
-### Talk about some of the relationships you observed in this part of the \
-investigation. Were there features that strengthened each other in terms of \
-looking at your feature(s) of interest?
-
-### Were there any interesting or surprising interactions between features?
-
-### OPTIONAL: Did you create any models with your dataset? Discuss the \
-strengths and limitations of your model.
-
-------
-
-# Final Plots and Summary
-
-> **Tip**: You've done a lot of exploration and have built up an understanding
-of the structure of and relationships between the variables in your dataset.
-Here, you will select three plots from all of your previous exploration to
-present here as a summary of some of your most interesting findings. Make sure
-that you have refined your selected plots for good titling, axis labels (with
-units), and good aesthetic choices (e.g. color, transparency). After each plot,
-make sure you justify why you chose each plot by describing what it shows.
-
-### Plot One
+#### Behaviours of the quality of wines related to the changes of alcohol % and density
 ```{r echo=FALSE, Plot_One}
 p1
 ```
 
-### Description One
+Based on the data in the top above plot, the data poins corresponding to the 
+high quality mainly clusterd towards botom right side of the plot. This behaviour
+indicates the quality of wine is generaly high when the alcohol percentage is 
+high and denity is low. 
 
-
-### Plot Two
+#### Behaviours of the quality of wines related to the changes of residual suger concentration and density 
 ```{r echo=FALSE, Plot_Two}
 p2
 ```
 
-### Description Two
+In above plot, there is slight seperation of high quality wines with the other 
+qualities. That arrangement of hiquality data poits suggest that in genaral the 
+quality of a wine is high when the density and the residual sugar concentrationa 
+are low.
 
 
-### Plot Three
+#### Behaviours of the quality of wines related to the changes of total sulfur dioxide concentration and density
+
 ```{r echo=FALSE, Plot_Three}
 p3 
 
 ```
+
+Similar to previuos two plots, this plot also moderately diifrentiate high quality
+wines with the others. Generally, the low density and somewhat sulfur dioxide 
+(about 75 to 125 g/dm^3) gives high quality wines.
+
+### Multiple linear regression analysis
+
+During above mutivariant analysis, it was noted that density plays major role of
+detrming wine quality with variation other parameters such as suger content, 
+alcohol percentage and sulfur dioxide content. Therefore, multiple regression 
+analysis carried out to detrmine the relationship between density of wines and
+other three parameters. 
 
 ```{r echo=FALSE, multiple_linearr_regression0}
 # Multiple Linear Regression 
@@ -564,11 +539,33 @@ ggplot(aes(density , predict_density), data = win_data3) +
     xlab("Density (g/cm^3)") +
     ylab("Predicted density (g/cm^3)") 
 
+#coef(fit2)
+
 ```
 
 ### Description Three
 
 ------
+
+
+
+
+
+
+### Talk about some of the relationships you observed in this part of the \
+investigation. Were there features that strengthened each other in terms of \
+looking at your feature(s) of interest?
+
+### Were there any interesting or surprising interactions between features?
+
+### OPTIONAL: Did you create any models with your dataset? Discuss the \
+strengths and limitations of your model.
+
+------
+
+
+
+
 
 # Reflection
 
