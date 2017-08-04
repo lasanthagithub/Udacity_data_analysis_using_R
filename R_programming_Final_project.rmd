@@ -25,6 +25,8 @@ library(gridExtra)
 library(GGally)
 
 ```
+
+
 ### Information about dataset
 
 In the dataset, there are over 4800 records are available in 11 attributes. Most 
@@ -186,6 +188,7 @@ grid.arrange(p1, p2, p3,p4, p5, p6, p7, p8, p9, p10, p11, p12, ncol = 3)
 All the atributes in the dataset are numerical. However, The quality attribute 
 was factorized, because the quality atribute is used to rank the qualty.
 
+
 ### Univariate Analysis
 
 Based on the above grid of histograms and barchart, it is obvious that all the 
@@ -206,6 +209,7 @@ Based on the above summary statistics, some outlier like data points can be obse
 significantly higher than the corresponding third quartile. However, to veryfy whether these max pointes are outlieers or not, a detailed analysis are required. Also, the stitistcs show that the majority of white wines fall into 5 and 6 quality categories.  
 
 
+
 ### Bivariate Plots Section
 
 From the univariant analysis in the above section reflects some insights of individual atributes in the dataset. In this section correlations between the atributes are investigated. 
@@ -223,7 +227,9 @@ ggpairs(win_data[2:13])
 In the above matrix of plots, scatter plots were shown each atributes to others 
 at the lower part of the diogonal. I the upper part, the corresponding 
 correlation coefficients are shown. Along the diogonal the density plots are 
-displayed for each atribute.    
+displayed for each atribute. 
+
+
 
 ### Bivariate Analysis
 ```{r,echo=FALSE, fig.height=9, fig.width=9, warning=FALSE, message=FALSE}
@@ -364,6 +370,8 @@ in alcohol % vs density and density vas total sulfur dioxide relationships,
 correlation coeeficient are sligtly improved. For the other relationships, 
 taking outliers off, did not improve the correlation.
 
+
+
 ### Multivariate Plots Section
 
 Now its time to check how these relationships (in above bivarient plots) affect
@@ -453,7 +461,9 @@ patterns in the wine quality with corresponding to x and y axis parameters
 changing. In the other plots there are visible wine quality patters can be seen. 
 
 
+
 ### Multivariate Analysis
+
 
 #### Behaviours of the quality of wines related to the changes of alcohol % and density
 ```{r echo=FALSE, Plot_One}
@@ -464,6 +474,8 @@ Based on the data in the top above plot, the data poins corresponding to the
 high quality mainly clusterd towards botom right side of the plot. This behaviour
 indicates the quality of wine is generaly high when the alcohol percentage is 
 high and denity is low. 
+
+
 
 #### Behaviours of the quality of wines related to the changes of residual suger concentration and density 
 ```{r echo=FALSE, Plot_Two}
@@ -476,6 +488,7 @@ quality of a wine is high when the density and the residual sugar concentrationa
 are low.
 
 
+
 #### Behaviours of the quality of wines related to the changes of total sulfur dioxide concentration and density
 
 ```{r echo=FALSE, Plot_Three}
@@ -486,6 +499,7 @@ p3
 Similar to previuos two plots, this plot also moderately diifrentiate high quality
 wines with the others. Generally, the low density and somewhat sulfur dioxide 
 (about 75 to 125 g/dm^3) gives high quality wines.
+
 
 ### Creating a Multiple linear regression model
 
@@ -524,6 +538,7 @@ than 0.05, the model is statisticaly significant.
 Further we can determine the validity of the model by fillowing charaterization 
 plots and the histograms from the univarient sections. The main assumptions such 
 that:
+
 * The variables indipendant each other
 * The indivdual variables are normaly distributed
 * The residuals do not show specific pattrens. etc.
@@ -534,6 +549,8 @@ par(mfrow =c(2,2))
 plot(fit)
 ```
 
+The following plot shows the predicted densities using the regression model 
+derived in above section.
 
 ```{r echo=FALSE, multiple_linearr_regression2}
 ## generating a new variable (predicted density)
@@ -563,36 +580,30 @@ ggplot(aes(density , predict_density), data = win_data3) +
 
 ```
 
-### Description Three
-
-------
-
-
-
-
-
-
-### Talk about some of the relationships you observed in this part of the \
-investigation. Were there features that strengthened each other in terms of \
-looking at your feature(s) of interest?
-
-### Were there any interesting or surprising interactions between features?
-
-### OPTIONAL: Did you create any models with your dataset? Discuss the \
-strengths and limitations of your model.
-
-------
+In above plot, the multiple linear regression model is shown in dark blue line. 
+In addition the data points are marked by the quality of wines as diffrent colors.
+Based on this model, the wine quality can be determined for most of the wines 
+by their density. However, more detailed analysis and classification such as 
+macine learning techniques needed to improve this model and to increse the 
+accuracy, because, still a considerable amount of data points related to high
+and low quality mixed together.
 
 
+### Reflection
+
+A data set related to white wine quality was investigated and analysed. By 
+definitio some of the variable has similar charateristics. For example, pH and 
+citric acid concentration. However, when determoning the relationships of the
+variables each other (see the bivarient matrix of plots) pH and ctric adid 
+concentration do not show a good relationship as expected (R^2 = -0.16). 
+Density of semms to have better corelatons between suger, alcohol and sulfur 
+dioxide content. Based on the these relationships with density and other mentioned 
+variables, a multiple linear regression model was generated. This generated 
+model can be used to determoine the wine quality. However, the model needs to be
+improved to get accurate predictions. Other classification techniques such that 
+in The machine leaning techniques can be used to improve this model or define
+a more accurate model. Some decrepancies of data quality observed, therefore, 
+the validity and quality of the data should be examined before doing further 
+analysis with the dataset.
 
 
-
-# Reflection
-
-> **Tip**: Here's the final step! Reflect on the exploration you performed and
-the insights you found. What were some of the struggles that you went through?
-What went well? What was surprising? Make sure you include an insight into
-future work that could be done with the dataset.
-
-> **Tip**: Don't forget to remove this, and the other **Tip** sections before
-saving your final work and knitting the final report!
