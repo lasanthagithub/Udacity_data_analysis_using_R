@@ -487,13 +487,18 @@ Similar to previuos two plots, this plot also moderately diifrentiate high quali
 wines with the others. Generally, the low density and somewhat sulfur dioxide 
 (about 75 to 125 g/dm^3) gives high quality wines.
 
-### Multiple linear regression analysis
+### Creating a Multiple linear regression model
 
 During above mutivariant analysis, it was noted that density plays major role of
 detrming wine quality with variation other parameters such as suger content, 
 alcohol percentage and sulfur dioxide content. Therefore, multiple regression 
 analysis carried out to detrmine the relationship between density of wines and
 other three parameters. 
+
+The follwing is the summary of the multiple linear regression medel. The summry 
+include the corelation coeeficient (0.92), y-intercept (1.00), and slopes for each parameter
+are given for the model along with the other important parametrs. 
+
 
 ```{r echo=FALSE, multiple_linearr_regression0}
 # Multiple Linear Regression 
@@ -508,6 +513,21 @@ summary(fit) # show the summary of results
 #vcov(fit) # covariance matrix for model parameters 
 #influence(fit) # regression diagnostics
 ```
+
+In this multiple linear regression model, the correlation of the deisity vs other
+selected parameters improved to 0.92 from prvious maximum coeficent 0.82. 
+Sice the model is improved with the selected parametrs, one can suggest that
+density can be explaned alcohol, suger and sulfur dioxide content. All the 
+p-values for model parametrs (y-intercep and slopes for each variables) are less
+than 0.05, the model is statisticaly significant.
+
+Further we can determine the validity of the model by fillowing charaterization 
+plots and the histograms from the univarient sections. The main assumptions such 
+that:
+* The variables indipendant each other
+* The indivdual variables are normaly distributed
+* The residuals do not show specific pattrens. etc.
+
 
 ```{r echo=FALSE, multiple_linearr_regression1}
 par(mfrow =c(2,2))
