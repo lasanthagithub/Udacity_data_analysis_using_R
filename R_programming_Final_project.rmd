@@ -1,10 +1,12 @@
-Lasantha Rathnayake
+Determination of white wine quality by exploratory data analysis and multiple linear regression model using R
 ========================================================
-## Analysis of white wine quality
-In this exploratory data analysis study, white wine Quality is discussed.The 
-dataset used in this investigation is 'White Wine Quality', which is a part of 
-two datasets for white wine and red whine. Following is the reference for the 
-dataset.
+
+#### By Lasantha Rathnayake
+
+In this exploratory data analysis study, white wine Quality data is examined.
+
+The dataset used in this investigation is a part of two datasets (for white wine
+and red whine) from the following is the source.
 
 *   P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis. 
     Modeling wine preferences by data mining from physicochemical properties.
@@ -29,25 +31,27 @@ library(GGally)
 
 ### Information about dataset
 
-In the dataset, there are over 4800 records are available in 11 attributes. Most 
-of the attributes are the chemical and physical properties of the wine type.
+In the dataset, there are about 4900 records and 12 attributes. Most 
+of the attributes are chemical and physical properties. The data were obtained 
+experimentally for different wine types.
 
 The dataset contains following attributes.
+
 ```{r echo=FALSE, Load_the_Data}
 # Load the Data
 #getwd()
 #list.files()
 win_data =  read.csv('wineQualityWhites.csv', sep = ',')
-names(win_data)
+names(win_data[2:13])
 
 ```
 The size of the dataset is as follows.
 ```{r, echo=FALSE}
 dim(win_data)
 ```
-Based on the reference of the dataset, the following descriptions are given for 
-the attributes in the dataset. The corresponding units if any for the atributes 
-are also given in along with the atribute name.
+In the original source, followings are the descriptions of attributes in the 
+dataset.The corresponding units if any for the attributes are also given in along
+with the attribute name.
 
 fixed acidity (g/dm^3):
 
@@ -95,10 +99,10 @@ pH:
 *   Describes how acidic or basic a wine is on a scale from 0 (very acidic) to 
     14 (very basic); most wines are between 3-4 on the pH scale
 
-sulphates (g/dm^3):
+sulfates (g/dm^3):
 
 *   A wine additive which can contribute to sulfur dioxide gas (S02) levels, 
-    wich acts as an antimicrobial and antioxidant
+    which acts as an antimicrobial and antioxidant
 
 alcohol (% by volume): 
 
@@ -110,24 +114,18 @@ quality:
 
 
 
-The following snippet of data shows the first six records of the dataset.
+In order to get a general idea of the data, the following snippet of data was 
+obtained (only the first six records of the dataset).
 
 ```{r, echo=FALSE}
 head(win_data)
 ```
 
-A summary of the main attributes are given below. 
-
-```{r, echo=FALSE}
-#summary(win_data[2:12])
-
-```
-
-
-
-
 
 ### Univariate Plots Section
+
+Lets look at the distribution of each individual variable as histograms.
+
 
 ```{r, echo=FALSE, fig.height= 7}
 
@@ -185,17 +183,18 @@ grid.arrange(p1, p2, p3,p4, p5, p6, p7, p8, p9, p10, p11, p12, ncol = 3)
 ```
 
 
-All the atributes in the dataset are numerical. However, The quality attribute 
-was factorized, because the quality atribute is used to rank the qualty.
+All the attributes in the dataset are numerical. However, The 'quality' attribute 
+was factorized, because the it is used to rank the wine quality.
 
 
 ### Univariate Analysis
 
-Based on the above grid of histograms and barchart, it is obvious that all the 
+Based on the above grid of histograms and the bar chart, it is obvious that all the 
 measured parameters for white wine are more or less normally distributed except 
-'residual sugar' which is left skewed. The distribution of pH is perfect normal distribution. 
+'residual sugar' which is left skewed. The distribution of pH has the most Gaussian
+like distribution. 
 
-The following summary shows the main descriptive statistics of the atributes.
+The following summary shows the major descriptive statistics of the attributes.
 
 
 ```{r, echo=FALSE}
@@ -205,29 +204,42 @@ summary(win_data[2:13])
 ```
 
 
-Based on the above summary statistics, some outlier like data points can be observed specially for the atributes - residual.sugar, free.sulfur.dioxide and total.sulfur.dioxide. In this three atributes, the maximum value are 
-significantly higher than the corresponding third quartile. However, to veryfy whether these max pointes are outlieers or not, a detailed analysis are required. Also, the stitistcs show that the majority of white wines fall into 5 and 6 quality categories.  
+Based on the above summary statistics, some outlier like data points can be 
+observed specially for the attributes - residual.sugar, free.sulfur.dioxide and 
+total.sulfur.dioxide. In this three attributes, the maximum value are 
+significantly higher than the corresponding third quartile values. However, to 
+verify whether those max points are outliers or not, a detailed analysis are 
+required. Also, the statistics show that the majority of white wines fall into 
+5 and 6 quality categories.  
 
 
 
 ### Bivariate Plots Section
 
-From the univariant analysis in the above section reflects some insights of individual atributes in the dataset. In this section correlations between the atributes are investigated. 
+From the uni-variant analysis in the above section, reflects some insights of 
+individual attributes in the dataset. In this section, correlations between the 
+attributes were investigated. 
 
-In order to understand the relationships between the atributes, following coorellation plots matrixs was generated. The matrix of plots are advantageous, because, all the relationships if any can be eaily identified. Therefore, further analysis can be easily implemented. 
+In order to understand the relationships between the attributes, following 
+correlation plots matrix was generated. The matrix of plots are advantageous
+for these type of analysis,because, all the relationships between variables can
+be easily identified. It is helpful to implement further analysis of the dataset. 
 
 ```{r echo=FALSE, fig.height=9, fig.width=9, warning=FALSE, message=FALSE}
-
+## Creating a correlation matrix plot
 ggpairs(win_data[2:13]) 
 
-#ggpairs(win_data[2:13], upper = list(continuous = "cor", combo = "dot", discrete ="facetbar", na = "na"), lower = list(continuous = "points", combo = "facethist", discrete = "facetbar", na = "na"), diag = list(continuous =  "densityDiag", discrete = "barDiag", na = "naDiag"), xlab = NULL, ylab = NULL, axisLabels = c("show", "internal", "none"))
+# ggpairs(win_data[2:13], upper = list(continuous = "cor", combo = "dot", 
+#    discrete ="facetbar", na = "na"), lower = list(continuous = "points", 
+#    combo = "facethist", discrete = "facetbar", na = "na"), 
+#   diag = list(continuous =  "densityDiag", discrete = "barDiag", na = "naDiag"),
+#   xlab = NULL, ylab = NULL, axisLabels = c("show", "internal", "none"))
 
 ```
 
-In the above matrix of plots, scatter plots were shown each atributes to others 
-at the lower part of the diogonal. I the upper part, the corresponding 
-correlation coefficients are shown. Along the diogonal the density plots are 
-displayed for each atribute. 
+In the above figure, the scatter plots each attributes with the others and the 
+corresponding correlation coefficients are shown.Along the diagonal of the 
+diagram the density plots are displayed for each attribute. 
 
 
 
@@ -237,15 +249,16 @@ displayed for each atribute.
 #coreletion = coreletion[coreletion > 0.5]
 #coreletion
 ```
-When examine the correlation coeffient for each relationship, some of the 
-atributes seems to be high to moderately coorelated each other. For example, 
-corellation coefficients of, alcohol vs density, residual.sugar vs density, total
-.sulfur.dioxide vs density, total.sulfur.dioxide vs free.sulfur.dioxide are 
--0.78, 0.84, 0.53 and 0.62, repectively.
+When examine the correlation coefficient for each relationship in above figure, 
+some of the attributes seems to be high to moderately correlated to each other. 
+For example, correlation coefficients of, alcohol vs density, residual sugar 
+vs density, total sulfur dioxide vs density, total sulfur dioxide vs free sulfur 
+dioxide are -0.78, 0.84, 0.53 and 0.62, respectively.
 
-Let's look at each relationship seperately.
+Let's look at each of those high to moderate relationships separately.
 
 ```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=5}
+## Generating bi-variate plots
 
 x = win_data$alcohol
 y = win_data$density
@@ -297,19 +310,24 @@ grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 ```
 
-The data distribution in above plots shows faily good correlations with R^2 > 0.5.
+The data distribution in above plots shows fairly good correlations with R^2 > 0.5.
 
-As noticed in the univarient analysis in the previous section, there seems to be
-a few outliers observable in the datset. Generally, in standaed conditions the 
-density of water is 1.00 g/cm^3. Therefore, the density of a solution in which 
-water is the solvent, should be slightly less than 1.00 g/cm^3. In the above 
-plots we can observe two density values greater tahn 1.00 g/cm^3. Therefore, we 
-can remove those outliers from the dataset. Folowing plots were generated without
-the density outliers. Also, extreame valus for sulfur dioxides can be removed.
+As noticed in the uni-variant analysis in the previous section, there seems to be
+a few outliers observable in the dataset. 
+
+Generally, in standard conditions, the density of water is 1.00 g/cm^3. 
+Therefore, the density of a solution in which the water is the solvent, should 
+be slightly less than 1.00 g/cm^3. In the above plots we can observe at least 
+two density values greater than 1.00 g/cm^3. Therefore, we can remove those 
+outliers from the dataset to clean the dataset. Following plots were generated 
+without the density outliers. Also, extreme values for sulfur dioxides can be 
+removed.
 
 
 ```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=5}
+## Generating bi-variate plots after removing the outliers
 
+## Remove the density > 1.00
 win_data1 = win_data[win_data$density < 1.00,]
 
 x = win_data1$alcohol
@@ -334,6 +352,7 @@ p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data1) +
         theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
 
+## Remove extreme values of total sulfur dioxide
 win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
 x = win_data2$total.sulfur.dioxide
 y = win_data2$density
@@ -347,6 +366,7 @@ p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data2) +
         theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
 
+## Remove extreme values of free sulfur dioxide
 win_data3 = win_data2[win_data2$free.sulfur.dioxide < 200,]
 
 y = win_data3$free.sulfur.dioxide 
@@ -365,27 +385,28 @@ grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 ```
 
-Now the data distrbution and the visuabilty of the plots are improved. In adition,
-in alcohol % vs density and density vas total sulfur dioxide relationships, 
-correlation coeeficient are sligtly improved. For the other relationships, 
-taking outliers off, did not improve the correlation.
+Now the data distribution and the visualizability of the plots are improved. In addition,
+in alcohol % vs density and density vs total sulfur dioxide relationships, 
+the correlation coefficients are slightly improved. For the other relationships, 
+taking density outliers off, did not improve the correlation.
 
 
 
 ### Multivariate Plots Section
 
-Now its time to check how these relationships (in above bivarient plots) affect
-to the wine quality. Folowwing plots difrentshiate the atributes by quality 
-(diffrent colr for each quality category).
+Now its time to check how these relationships (shown in the above bi-variant 
+plots) affect to the wine quality. In the following plots, the attributes are 
+differentiating by the 'quality' variable (different color for each quality category).
 
-In this case the quality is group into 3 main categories as follows in order to
-see the differences clearly. 
+The quality variable was grouped into 3 main categories as follows in order to
+see the differences clearly (created a new variable 'Rank'). 
 
 * Quality 1 to 4 = low quality
 * Quality 5 to 6 = medium quality
-* Quality 7 to 10 = high qualiy
+* Quality 7 to 10 = high quality
 
 ```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=6}
+## Creating a new variable called Rank.
 win_data$Rank =  ifelse(win_data$quality == '3', 'low',
                         ifelse(win_data$quality == '4', 'low',
                         ifelse(win_data$quality == '5', 'medium',
@@ -395,11 +416,17 @@ win_data$Rank =  ifelse(win_data$quality == '3', 'low',
                         ifelse(win_data$quality == '9', 'high',
                         ifelse(win_data$quality == '10','high','low')))))))) 
 
+## Recalculate with the new variable
+## Remove the density > 1.00
+win_data1 = win_data[win_data$density < 1.00,]
+## Remove extreme values of total sulfur dioxide
+win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
+## Remove extreme values of free sulfur dioxide
+win_data3 = win_data2[win_data2$free.sulfur.dioxide < 200,]
 ```
 
 ```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=6}
-
-win_data1 = win_data[win_data$density < 1.00,]
+## Generating bi-variate plots grouping by rank
 
 x = win_data1$alcohol
 y = win_data1$density
@@ -423,7 +450,7 @@ p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data1) +
         theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
 
-win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
+
 x = win_data2$total.sulfur.dioxide
 y = win_data2$density
 
@@ -435,8 +462,6 @@ p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data2) +
                 subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
         theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
               axis.title = element_text(size=10, hjust=0.5))
-
-win_data3 = win_data2[win_data2$free.sulfur.dioxide < 200,]
 
 y = win_data3$free.sulfur.dioxide 
 x = win_data3$total.sulfur.dioxide
@@ -454,68 +479,75 @@ grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 ```
 
-The above four plots show, how the quality (Rank) of wine behave with diffrent
-parameters. The observations of the plots are given below except the bottom right
-plot (Total vs free sulfur dioxide concentrations) where, there is no udentifiable 
-patterns in the wine quality with corresponding to x and y axis parameters 
-changing. In the other plots there are visible wine quality patters can be seen. 
+The above four plots show, how the quality (Rank) of wine behave with different
+attributes. The observations of the plots are discussed below except for the plot
+total vs free sulfur dioxide concentrations, due to absence of identifiable 
+patterns in that particular plot.
 
 
 
 ### Multivariate Analysis
 
 
+
 #### Behaviours of the quality of wines related to the changes of alcohol % and density
 ```{r echo=FALSE, Plot_One}
+## reprint the plot
 p1
 ```
 
-Based on the data in the top above plot, the data poins corresponding to the 
-high quality mainly clusterd towards botom right side of the plot. This behaviour
-indicates the quality of wine is generaly high when the alcohol percentage is 
-high and denity is low. 
+Based on the data in the above plot, the data points corresponding to the 
+high quality (red color points) mainly clustered towards the bottom right side of 
+the plot. This behavior indicates the quality of wine is generally high when the
+alcohol percentage is high and density is low with few exceptions. 
 
 
 
-#### Behaviours of the quality of wines related to the changes of residual suger concentration and density 
+
+
+#### Behaviours of the quality of wines related to the changes of residual sugar concentration and density 
 ```{r echo=FALSE, Plot_Two}
+## reprint the plot
 p2
 ```
 
-In above plot, there is slight seperation of high quality wines with the other 
-qualities. That arrangement of hiquality data poits suggest that in genaral the 
-quality of a wine is high when the density and the residual sugar concentrationa 
-are low.
+In above plot, there is slight separation of high quality wines with the other 
+qualities. That arrangement of high quality data points suggest that in general 
+the quality of a wine type is high when the density and the residual sugar 
+concentrations are low with some exceptions.
+
+
 
 
 
 #### Behaviours of the quality of wines related to the changes of total sulfur dioxide concentration and density
 
 ```{r echo=FALSE, Plot_Three}
+## reprint the plot
 p3 
 
 ```
 
-Similar to previuos two plots, this plot also moderately diifrentiate high quality
+Similar to previous two plots, this plot also moderately differentiate high quality
 wines with the others. Generally, the low density and somewhat sulfur dioxide 
-(about 75 to 125 g/dm^3) gives high quality wines.
+content (about 75 to 125 g/dm^3) give high quality wines.
 
 
 ### Creating a Multiple linear regression model
 
-During above mutivariant analysis, it was noted that density plays major role of
-detrming wine quality with variation other parameters such as suger content, 
+During above muti-variant analysis, it was noted that density plays major role of
+determining wine quality with variation of the other parameters such as sugar content, 
 alcohol percentage and sulfur dioxide content. Therefore, multiple regression 
-analysis carried out to detrmine the relationship between density of wines and
-other three parameters. 
+analysis was carried out to determine a relationship, if any, between density of 
+wines and other three parameters. 
 
-The follwing is the summary of the multiple linear regression medel. The summry 
-include the corelation coeeficient (0.92), y-intercept (1.00), and slopes for each parameter
-are given for the model along with the other important parametrs. 
+The following is the summary of the multiple linear regression model generated. 
+The summary include the correlation coefficient (0.92), y-intercept (1.00), and 
+slopes for each parameter for the model along with other important parameters. 
 
 
 ```{r echo=FALSE, multiple_linearr_regression0}
-# Multiple Linear Regression 
+# Multiple Linear Regression model
 fit <- lm(density ~ total.sulfur.dioxide + residual.sugar + alcohol, data=win_data3)
 summary(fit) # show the summary of results
 
@@ -528,26 +560,37 @@ summary(fit) # show the summary of results
 #influence(fit) # regression diagnostics
 ```
 
-In this multiple linear regression model, the correlation of the deisity vs other
-selected parameters improved to 0.92 from prvious maximum coeficent 0.82. 
-Sice the model is improved with the selected parametrs, one can suggest that
-density can be explaned alcohol, suger and sulfur dioxide content. All the 
-p-values for model parametrs (y-intercep and slopes for each variables) are less
-than 0.05, the model is statisticaly significant.
+In this multiple linear regression model, the correlation coefficient of the 
+density vs other selected parameters improved to 0.92 from the previous maximum 
+individual parameter coefficient of 0.82. 
 
-Further we can determine the validity of the model by fillowing charaterization 
-plots and the histograms from the univarient sections. The main assumptions such 
-that:
+All the p-values for model parameters (y-intercept and slopes) are less than 0.05. 
+Therefore, the model parameters are statistically significant. That indicates the 
+robustness of the model.
 
-* The variables indipendant each other
-* The indivdual variables are normaly distributed
-* The residuals do not show specific pattrens. etc.
+ 
+### Validating the model
+
+We can determine the validity of the model by analyzing the following 
+characterization plots and the histograms in the uni-variant section.
+
+The main assumptions for validating a linear model are as follows.
+
+* The variables should be independent from each other.
+* The individual variables should be normally distributed.
+* The residuals should not show specific patterns.
+
+Since, all of these assumptions are fulfilled by the selected variables in the 
+model, the validity of the model is confirmed.
 
 
 ```{r echo=FALSE, multiple_linearr_regression1}
+## getting parameters to validate the model
 par(mfrow =c(2,2))
 plot(fit)
 ```
+
+### Display the model with calculated and measured wine density data
 
 The following plot shows the predicted densities using the regression model 
 derived in above section.
@@ -568,7 +611,10 @@ win_data3$predict_density = win_data3$total.sulfur.dioxide*(coef1) +
 ```
 
 ```{r echo=FALSE, multiple_linearr_regression3}
+## Generating simple linear regression model
 fit2 = lm(predict_density ~ density, data = win_data3)
+
+## Plot the model
 ggplot(aes(density , predict_density), data = win_data3) +
     geom_point(aes(color= Rank), alpha = 1/3, position =
                    position_jitter(h = 0)) +
@@ -580,30 +626,33 @@ ggplot(aes(density , predict_density), data = win_data3) +
 
 ```
 
-In above plot, the multiple linear regression model is shown in dark blue line. 
-In addition the data points are marked by the quality of wines as diffrent colors.
+In this plot, the multiple linear regression model is shown in dark blue line.
+The data points are the measured densities and the calculated densities for the wines.
+In addition, the data points are marked by the quality of wines as different colors.
 Based on this model, the wine quality can be determined for most of the wines 
 by their density. However, more detailed analysis and classification such as 
-macine learning techniques needed to improve this model and to increse the 
-accuracy, because, still a considerable amount of data points related to high
-and low quality mixed together.
+machine learning techniques should be carried out to improve the model and to 
+increase the accuracy of the model. 
 
 
 ### Reflection
 
 A data set related to white wine quality was investigated and analysed. By 
-definitio some of the variable has similar charateristics. For example, pH and 
-citric acid concentration. However, when determoning the relationships of the
-variables each other (see the bivarient matrix of plots) pH and ctric adid 
-concentration do not show a good relationship as expected (R^2 = -0.16). 
-Density of semms to have better corelatons between suger, alcohol and sulfur 
-dioxide content. Based on the these relationships with density and other mentioned 
+definition, some of the variables have similar characteristics and relation.
+For example, pH and citric acid concentration should be related each other, 
+because, literally those variable reflects same information. However, when 
+determining the relationships of the variables each other (see the bi-variant 
+matrix of plots) pH and citric acid concentration do not show a good relationship
+as expected (R^2 = -0.16). 
+
+Density of seems to have better correlation between sugar, alcohol and sulfur 
+dioxide content. Based on the these relationships, using density and other mentioned 
 variables, a multiple linear regression model was generated. This generated 
-model can be used to determoine the wine quality. However, the model needs to be
+model can be used to determine the wine quality. However, the model needs to be
 improved to get accurate predictions. Other classification techniques such that 
-in The machine leaning techniques can be used to improve this model or define
-a more accurate model. Some decrepancies of data quality observed, therefore, 
-the validity and quality of the data should be examined before doing further 
+techniques in The machine-leaning methods can be used to improve this model or 
+define a separate more accurate model. Some discrepancies of data quality observed, 
+therefore, the validity and quality of the data should be examined before doing further 
 analysis with the dataset.
 
 
