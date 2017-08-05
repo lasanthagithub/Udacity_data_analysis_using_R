@@ -1,0 +1,679 @@
+Determination of white wine quality by exploratory data analysis and multiple 
+linear regression model using R
+========================================================
+
+#### By Lasantha Rathnayake
+
+In this exploratory data analysis study, white wine Quality data is examined.
+
+The dataset used in this investigation is a part of two datasets (for white wine
+and red whine) from the following is the source.
+
+*   P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis. 
+    Modeling wine preferences by data mining from physicochemical properties.
+    In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+## Installing required packages
+# install.packages("ggplot2", dependencies = T) 
+# install.packages("knitr", dependencies = T)
+# install.packages("dplyr", dependencies = T)
+#install.packages('GGally', dependencies = T)
+
+## Load required packages
+library(ggplot2)
+library(knitr)
+library(dplyr)
+library(gridExtra)
+library(GGally)
+
+```
+
+
+### Information about dataset
+
+In the dataset, there are about 4900 records and 12 attributes. Most 
+of the attributes are chemical and physical properties. The data were obtained 
+experimentally for different wine types.
+
+The dataset contains following attributes.
+
+```{r echo=FALSE, Load_the_Data}
+# Load the Data
+#getwd()
+#list.files()
+win_data =  read.csv('wineQualityWhites.csv', sep = ',')
+names(win_data)
+
+```
+The size of the dataset is as follows.
+```{r, echo=FALSE}
+## subset only omportant varibles
+win_data = win_data[c("fixed.acidity", "volatile.acidity", "citric.acid", 
+                      "residual.sugar", "chlorides", "free.sulfur.dioxide", 
+                      "total.sulfur.dioxide", "density", "pH","sulphates",
+                      "alcohol", "quality")]
+
+dim(win_data)
+```
+In the original source, followings are the descriptions of attributes in the 
+dataset.The corresponding units if any for the attributes are also given in 
+along with the attribute name.
+
+fixed acidity (g/dm^3):
+
+*   Most acids involved with wine or fixed or nonvolatile 
+    (do not evaporate readily).
+
+volatile acidity (g/dm^3):
+
+*   The amount of acetic acid in wine, which at too high of levels can lead to 
+    an unpleasant, vinegar taste
+
+citric acid (g/dm^3):
+
+*   Found in small quantities, citric acid can add 'freshness' and flavor 
+    to wines
+
+residual sugar (g/dm^3):
+
+*   The amount of sugar remaining after fermentation stops, it's rare to 
+    find wines with less than 1 gram/liter and wines with greater than 
+    45 grams/liter are considered sweet
+
+chlorides (g/dm^3): 
+
+*   The amount of salt in the wine
+
+free sulfur dioxide (g/dm^3):
+
+*   The free form of SO2 exists in equilibrium between molecular SO2 
+    (as a dissolved gas) and bisulfite ion; it prevents microbial 
+    growth and the oxidation of wine
+
+total sulfur dioxide (g/dm^3):
+
+*   Amount of free and bound forms of S02; in low concentrations, SO2 is mostly 
+    undetectable in wine, but at free SO2 concentrations over 50 ppm, SO2 
+    becomes evident in the nose and taste of wine
+
+density (g/cm^3): 
+
+*   The density of water is close to that of water depending on the percent 
+    alcohol and sugar content
+
+pH: 
+*   Describes how acidic or basic a wine is on a scale from 0 (very acidic) to 
+    14 (very basic); most wines are between 3-4 on the pH scale
+
+sulfates (g/dm^3):
+
+*   A wine additive which can contribute to sulfur dioxide gas (S02) levels, 
+    which acts as an antimicrobial and antioxidant
+
+alcohol (% by volume): 
+
+*   The percent alcohol content of the wine
+
+quality: 
+
+*   Score between 0 and 10
+
+
+
+In order to get a general idea of the data, the following snippet of data was 
+obtained (only the first six records of the dataset).
+
+```{r, echo=FALSE}
+head(win_data)
+```
+
+
+### Univariate Plots Section
+
+Lets look at the distribution of each individual variable as histograms.
+
+
+```{r, echo=FALSE, fig.height= 7}
+
+## Making histograms and barcharts for the main atributes
+p1 = ggplot(aes(x = fixed.acidity), data = win_data) + 
+        geom_histogram(bins = 35, binwidth = .25, color = 'black', 
+                       fill = '#F79420')
+
+p2 = ggplot(aes(x = volatile.acidity), data = win_data) + 
+        geom_histogram(bins = 35, binwidth = .05, color = 'black', 
+                       fill = '#F79420') 
+
+p3 = ggplot(aes(x = citric.acid), data = win_data) + 
+        geom_histogram(bins = 35, binwidth = .05, color = 'black', 
+                       fill = '#F79420') 
+
+p4 = ggplot(aes(x = residual.sugar), data = win_data) + 
+        geom_histogram(bins = 35, binwidth = 1, color = 'black', 
+                       fill = '#F79420')
+
+p5 = ggplot(aes(x = chlorides), data = win_data) + 
+        geom_histogram(bins = 35, binwidth = .007, color = 'black', 
+                       fill = '#F79420') 
+
+p6 = ggplot(aes(x = free.sulfur.dioxide), data = win_data) + 
+        geom_histogram(bins = 35, binwidth = 6, color = 'black', 
+                       fill = '#F79420')
+
+p7 =  ggplot(aes(x = total.sulfur.dioxide), data = win_data) + 
+        geom_histogram(bins = 35, binwidth = 8, color = 'black', 
+                       fill = '#F79420')
+
+p8 = ggplot(aes(x = density), data = win_data) + 
+        geom_histogram(bins = 35, binwidth = .001, color = 'black', 
+                       fill = '#F79420')
+
+p9 =  ggplot(aes(x = pH), data = win_data) + 
+        geom_histogram(bins = 35, binwidth = .05, color = 'black', 
+                       fill = '#F79420')
+
+p10 = ggplot(aes(x = sulphates), data = win_data) + 
+        geom_histogram(bins = 35, binwidth = .02, color = 'black', 
+                       fill = '#F79420')
+
+p11 = ggplot(aes(x = alcohol), data = win_data) + 
+        geom_histogram(bins = 35, binwidth = .25, color = 'black', 
+                       fill = '#F79420') 
+
+p12 = ggplot(aes(x = quality), data = win_data) + 
+        geom_bar(color = 'black', fill = '#F79420') 
+    
+
+grid.arrange(p1, p2, p3,p4, p5, p6, p7, p8, p9, p10, p11, p12, ncol = 3)
+
+```
+
+
+All the attributes in the dataset are numerical. However, The 'quality' 
+attribute was factorized, because the it is used to rank the wine quality.
+
+
+### Univariate Analysis
+
+Based on the above grid of histograms and the bar chart, it is obvious that all 
+the measured parameters for white wine are more or less normally distributed 
+except 'residual sugar' which is left skewed. The distribution of pH has the 
+most Gaussian like distribution. 
+
+The following summary shows the major descriptive statistics of the attributes.
+
+
+```{r, echo=FALSE}
+win_data[, 'quality'] <- as.factor(win_data[, 'quality'])
+summary(win_data)
+
+```
+
+
+Based on the above summary statistics, some outlier like data points can be 
+observed specially for the attributes - residual.sugar, free.sulfur.dioxide and 
+total.sulfur.dioxide. In this three attributes, the maximum value are 
+significantly higher than the corresponding third quartile values. However, to 
+verify whether those max points are outliers or not, a detailed analysis are 
+required. Also, the statistics show that the majority of white wines fall into 
+5 and 6 quality categories.  
+
+
+
+### Bivariate Plots Section
+
+From the uni-variant analysis in the above section, reflects some insights of 
+individual attributes in the dataset. In this section, correlations between the 
+attributes were investigated. 
+
+In order to understand the relationships between the attributes, following 
+correlation plots matrix was generated. The matrix of plots are advantageous
+for these type of analysis,because, all the relationships between variables can
+be easily identified. It is helpful to implement further analysis of the 
+dataset. 
+
+```{r echo=FALSE, fig.height=9, fig.width=9, warning=FALSE, message=FALSE}
+## Creating a correlation matrix plot
+
+ggpairs(win_data)
+
+# ggpairs(win_data[2:13], upper = list(continuous = "cor", combo = "dot", 
+#   discrete ="facetbar", na = "na"), lower = list(continuous = "points", 
+#   combo = "facethist", discrete = "facetbar", na = "na"), 
+#   diag = list(continuous =  "densityDiag", discrete = "barDiag", 
+#        na = "naDiag"),
+#   xlab = NULL, ylab = NULL, axisLabels = c("show", "internal", "none"))
+
+```
+
+In the above figure, the scatter plots each attributes with the others and the 
+corresponding correlation coefficients are shown.Along the diagonal of the 
+diagram the density plots are displayed for each attribute. 
+
+
+
+### Bivariate Analysis
+```{r,echo=FALSE, fig.height=9, fig.width=9, warning=FALSE, message=FALSE}
+#coreletion = cor(win_data[2:12])
+#coreletion = coreletion[coreletion > 0.5]
+#coreletion
+```
+When examine the correlation coefficient for each relationship in above figure, 
+some of the attributes seems to be high to moderately correlated to each other. 
+For example, correlation coefficients of, alcohol vs density, residual sugar 
+vs density, total sulfur dioxide vs density, total sulfur dioxide vs free sulfur 
+dioxide are -0.78, 0.84, 0.53 and 0.62, respectively.
+
+Let's look at each of those high to moderate relationships separately.
+
+```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=5}
+## Generating bi-variate plots
+
+x = win_data$alcohol
+y = win_data$density
+p1 = ggplot(aes(x = alcohol, y = density ), data = win_data) + 
+        geom_point()+
+        ylab("Density (g/cm^3)") +
+        xlab("Alcohol %") +
+        ggtitle("Alcohol % vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+
+x = win_data$residual.sugar
+y = win_data$density
+p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data) + 
+        geom_point()+
+        ylab("Density (g/cm^3)") +
+        xlab("Residual sugar concentration (g/dm^3)") +
+        ggtitle(" Residual sugar vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+x = win_data$total.sulfur.dioxide
+y = win_data$density
+
+p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data) + 
+        geom_point() +
+        xlab("Total sulfur dioxide (g/dm^3)") +
+        ylab("Density (g/cm^3)") +
+        ggtitle("Total sulfur dioxide vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+
+
+y = win_data$free.sulfur.dioxide 
+x = win_data$total.sulfur.dioxide
+p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), 
+            data = win_data) + 
+        geom_point() +
+        xlab("Total sulfur dioxide (g/dm^3)") +
+        ylab("Free sulfur dioxide (g/dm^3)") +
+        ggtitle("Total vs free sulfur dioxide", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+ 
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+
+
+```
+
+The data distribution in above plots shows fairly good correlations with 
+R^2 > 0.5.
+
+As noticed in the uni-variant analysis in the previous section, there seems 
+to be a few outliers observable in the dataset. 
+
+Generally, in standard conditions, the density of water is 1.00 g/cm^3. 
+Therefore, the density of a solution in which the water is the solvent, should 
+be slightly less than 1.00 g/cm^3. In the above plots we can observe at least 
+two density values greater than 1.00 g/cm^3. Therefore, we can remove those 
+outliers from the dataset to clean the dataset. Following plots were generated 
+without the density outliers. Also, extreme values for sulfur dioxides can be 
+removed.
+
+
+```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=5}
+## Generating bi-variate plots after removing the outliers
+
+## Remove the density > 1.00
+win_data1 = win_data[win_data$density < 1.00,]
+
+x = win_data1$alcohol
+y = win_data1$density
+p1 = ggplot(aes(x = alcohol, y = density ), data = win_data1) + 
+        geom_point()+
+        ylab("Density (g/cm^3)") +
+        xlab("Alcohol %") +
+        ggtitle("Alcohol % vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+
+x = win_data1$residual.sugar
+y = win_data1$density
+p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data1) + 
+        geom_point()+
+        ylab("Density (g/cm^3)") +
+        xlab("Residual sugar concentration (g/dm^3)") +
+        ggtitle(" Residual sugar vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+
+## Remove extreme values of total sulfur dioxide
+win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
+x = win_data2$total.sulfur.dioxide
+y = win_data2$density
+
+p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data2) + 
+        geom_point() +
+        xlab("Total sulfur dioxide (g/dm^3)") +
+        ylab("Density (g/cm^3)") +
+        ggtitle("Total sulfur dioxide vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+
+## Remove extreme values of free sulfur dioxide
+win_data3 = win_data2[win_data2$free.sulfur.dioxide < 200,]
+
+y = win_data3$free.sulfur.dioxide 
+x = win_data3$total.sulfur.dioxide
+p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), 
+            data = win_data3) + 
+        geom_point() +
+        xlab("Total sulfur dioxide (g/dm^3)") +
+        ylab("Free sulfur dioxide (g/dm^3)") +
+        ggtitle("Total vs free sulfur dioxide", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+ 
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+
+
+```
+
+Now the data distribution and the visualizability of the plots are improved. 
+In addition, in alcohol % vs density and density vs total sulfur dioxide 
+relationships, the correlation coefficients are slightly improved. For the other
+relationships, taking density outliers off, did not improve the correlation.
+
+
+
+### Multivariate Plots Section
+
+Now its time to check how these relationships (shown in the above bi-variant 
+plots) affect to the wine quality. In the following plots, the attributes are 
+differentiating by the 'quality' variable (different color for each quality 
+category).
+
+The quality variable was grouped into 3 main categories as follows in order to
+see the differences clearly (created a new variable 'Rank'). 
+
+* Quality 1 to 4 = low quality
+* Quality 5 to 6 = medium quality
+* Quality 7 to 10 = high quality
+
+```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=6}
+## Creating a new variable called Rank.
+win_data$Rank =  ifelse(win_data$quality == '3', 'low',
+                        ifelse(win_data$quality == '4', 'low',
+                        ifelse(win_data$quality == '5', 'medium',
+                        ifelse(win_data$quality == '6', 'medium',
+                        ifelse(win_data$quality == '7', 'high',
+                        ifelse(win_data$quality == '8', 'high',
+                        ifelse(win_data$quality == '9', 'high',
+                        ifelse(win_data$quality == '10','high','low')))))))) 
+
+## Recalculate with the new variable
+## Remove the density > 1.00
+win_data1 = win_data[win_data$density < 1.00,]
+## Remove extreme values of total sulfur dioxide
+win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
+## Remove extreme values of free sulfur dioxide
+win_data3 = win_data2[win_data2$free.sulfur.dioxide < 200,]
+```
+
+```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=6}
+## Generating bi-variate plots grouping by rank
+
+x = win_data1$alcohol
+y = win_data1$density
+p1 = ggplot(aes(x = alcohol, y = density),  data = win_data1) + 
+        geom_point(aes(colour = Rank), alpha = 1/3, 
+                   position = position_jitter(h = 0))+
+        ylab("Density (g/cm^3)") +
+        xlab("Alcohol %") +
+        ggtitle("Alcohol % vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+
+x = win_data1$residual.sugar
+y = win_data1$density
+p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data1) + 
+        geom_point(aes(colour = Rank), alpha = 1/3, 
+                   position = position_jitter(h = 0))+
+        ylab("Density (g/cm^3)") +
+        xlab("Residual sugar concentration (g/dm^3)") +
+        ggtitle(" Residual sugar vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+
+
+x = win_data2$total.sulfur.dioxide
+y = win_data2$density
+
+p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data2) + 
+        geom_point(aes(colour = Rank),alpha = 1/3, 
+                   position = position_jitter(h = 0)) +
+        xlab("Total sulfur dioxide (g/dm^3)") +
+        ylab("Density (g/cm^3)") +
+        ggtitle("Total sulfur dioxide vs density", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+
+y = win_data3$free.sulfur.dioxide 
+x = win_data3$total.sulfur.dioxide
+p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), 
+                data = win_data3) + 
+        geom_point(aes(colour = Rank), alpha = 1/3, 
+                position = position_jitter(h = 0)) +
+        xlab("Total sulfur dioxide (g/dm^3)") +
+        ylab("Free sulfur dioxide (g/dm^3)") +
+        ggtitle("Total vs free sulfur dioxide", 
+                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+ 
+        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
+              axis.title = element_text(size=10, hjust=0.5))
+
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+
+
+```
+
+The above four plots show, how the quality (Rank) of wine behave with different
+attributes. The observations of the plots are discussed below except for the 
+plot total vs free sulfur dioxide concentrations, due to absence of identifiable 
+patterns in that particular plot.
+
+
+
+### Multivariate Analysis
+
+
+
+#### Behaviours of the quality of wines related to the changes of alcohol % and density
+
+
+```{r echo=FALSE, Plot_One}
+## reprint the plot
+p1
+```
+
+Based on the data in the above plot, the data points corresponding to the 
+high quality (red color points) mainly clustered towards the bottom right side 
+of the plot. This behavior indicates the quality of wine is generally high when
+the alcohol percentage is high and density is low with few exceptions. 
+
+
+
+
+
+#### Behaviours of the quality of wines related to the changes of residual sugar concentration and density 
+```{r echo=FALSE, Plot_Two}
+## reprint the plot
+p2
+```
+
+In above plot, there is slight separation of high quality wines with the other 
+qualities. That arrangement of high quality data points suggest that in general 
+the quality of a wine type is high when the density and the residual sugar 
+concentrations are low with some exceptions.
+
+
+
+
+
+#### Behaviours of the quality of wines related to the changes of total sulfur dioxide concentration and density
+
+```{r echo=FALSE, Plot_Three}
+## reprint the plot
+p3 
+
+```
+
+Similar to previous two plots, this plot also moderately differentiate high 
+quality wines with the others. Generally, the low density and somewhat sulfur 
+dioxide content (about 75 to 125 g/dm^3) give high quality wines.
+
+
+### Creating a Multiple linear regression model
+
+During above muti-variant analysis, it was noted that density plays major role 
+of determining wine quality with variation of the other parameters such as sugar
+content, alcohol percentage and sulfur dioxide content. Therefore, multiple 
+regression analysis was carried out to determine a relationship, if any, 
+between density of wines and other three parameters. 
+
+The following is the summary of the multiple linear regression model generated. 
+The summary include the correlation coefficient (0.92), y-intercept (1.00), and 
+slopes for each parameter for the model along with other important parameters. 
+
+
+```{r echo=FALSE, multiple_linearr_regression0}
+# Multiple Linear Regression model
+fit <- lm(density ~ total.sulfur.dioxide + residual.sugar + 
+              alcohol, data=win_data3)
+summary(fit) # show the summary of results
+
+#coefficients(fit) # model coefficients
+#confint(fit, level=0.95) # CIs for model parameters 
+#fitted(fit) # predicted values
+#residuals(fit) # residuals
+#anova(fit) # anova table 
+#vcov(fit) # covariance matrix for model parameters 
+#influence(fit) # regression diagnostics
+```
+
+In this multiple linear regression model, the correlation coefficient of the 
+density vs other selected parameters improved to 0.92 from the previous maximum 
+individual parameter coefficient of 0.82. 
+
+All the p-values for model parameters (y-intercept and slopes) are less than 
+0.05. Therefore, the model parameters are statistically significant. That 
+indicates the robustness of the model.
+
+ 
+### Validating the model
+
+We can determine the validity of the model by analyzing the following 
+characterization plots and the histograms in the uni-variant section.
+
+The main assumptions for validating a linear model are as follows.
+
+* The variables should be independent from each other.
+* The individual variables should be normally distributed.
+* The residuals should not show specific patterns.
+
+Since, all of these assumptions are fulfilled by the selected variables in the 
+model, the validity of the model is confirmed.
+
+
+```{r echo=FALSE, multiple_linearr_regression1}
+## getting parameters to validate the model
+par(mfrow =c(2,2))
+plot(fit)
+```
+
+### Display the model with calculated and measured wine density data
+
+The following plot shows the predicted densities using the regression model 
+derived in above section.
+
+```{r echo=FALSE, multiple_linearr_regression2}
+## generating a new variable (predicted density)
+intercept =  1.004e+00
+coef1 =  5.861e-06  
+coef2 =  3.233e-04  
+coef3 = -1.192e-03
+
+
+win_data3$predict_density = win_data3$total.sulfur.dioxide*(coef1) +
+    win_data3$residual.sugar*(coef2) +
+    win_data3$alcohol*(coef3) +intercept
+
+
+```
+
+```{r echo=FALSE, multiple_linearr_regression3}
+## Generating simple linear regression model
+fit2 = lm(predict_density ~ density, data = win_data3)
+
+## Plot the model
+ggplot(aes(density , predict_density), data = win_data3) +
+    geom_point(aes(color= Rank), alpha = 1/3, position =
+                   position_jitter(h = 0)) +
+    geom_abline(intercept = coef(fit2)[1], slope = coef(fit2)[2], col='blue')+
+    xlab("Density (g/cm^3)") +
+    ylab("Predicted density (g/cm^3)") 
+
+#coef(fit2)
+
+```
+
+In this plot, the multiple linear regression model is shown in dark blue line.
+The data points are the measured densities and the calculated densities for the 
+wines.In addition, the data points are marked by the quality of wines as 
+different colors.Based on this model, the wine quality can be determined for 
+most of the wines by their density. However, more detailed analysis and 
+classification such as machine learning techniques should be carried out to 
+improve the model and to increase the accuracy of the model. 
+
+
+### Reflection
+
+A data set related to white wine quality was investigated and analysed. By 
+definition, some of the variables have similar characteristics and relation.
+For example, pH and citric acid concentration should be related each other, 
+because, literally those variable reflects same information. However, when 
+determining the relationships of the variables each other (see the bi-variant 
+matrix of plots) pH and citric acid concentration do not show a good 
+relationship as expected (R^2 = -0.16). 
+
+Density of seems to have better correlation between sugar, alcohol and sulfur 
+dioxide content. Based on the these relationships, using density and other 
+mentioned variables, a multiple linear regression model was generated. This 
+generated model can be used to determine the wine quality. However, the model 
+needs to be improved to get accurate predictions. Other classification 
+techniques such that techniques in The machine-leaning methods can be used to 
+improve this model or define a separate more accurate model. Some discrepancies
+of data quality observed, therefore, the validity and quality of the data 
+should be examined before doing further analysis with the dataset.
+
+
