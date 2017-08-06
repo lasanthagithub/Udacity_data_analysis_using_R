@@ -124,129 +124,269 @@ obtained (only the first six records of the dataset).
 head(win_data)
 ```
 
-
-### Univariate Plots Section
-
-Lets look at the distribution of each individual variable as histograms.
-
-```{r, echo = FALSE, fig.height = 7}
-## Function to create a histogram
-create_histogram = function(variabl, binwidth = 0.25) {
-                    return( ggplot(aes_string(x = variabl), data = win_data) + 
-                            geom_histogram(bins = 35, binwidth = binwidth,
-                                           color = 'black', fill = '#F79420') )
-                    }
-```
-
-
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram('fixed.acidity')
-
-```
-            
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram("volatile.acidity", 0.05)
-
-```
-
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram("citric.acid", 0.05)
-
-```
-
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram("residual.sugar", 1)
-
-```
-
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram("chlorides", 0.007)
-
-```
-
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram("free.sulfur.dioxide", 6)
-
-```
-
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram("total.sulfur.dioxide", 8)
-
-```
-
-
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram("density", 0.001)
-
-```
-
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram("pH", 0.05)
-
-```
-
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram("sulphates", 0.02)
-
-```
-
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram("alcohol", 0.25)
-
-```
-
-```{r, echo = FALSE}
-## Call function to create a histogram
-create_histogram("quality", 1)
-
-```
-
-
-
-
-
-
-
 All the attributes in the dataset are numerical. However, The 'quality' 
 attribute was factorized, because the it is used to rank the wine quality.
 
 
-### Univariate Analysis
+### Univariate Plots and analysis
 
-Based on the above grid of histograms and the bar chart, it is obvious that all 
-the measured parameters for white wine are more or less normally distributed 
-except 'residual sugar' which is left skewed. The distribution of pH has the 
-most Gaussian like distribution. 
-
-The following summary shows the major descriptive statistics of the attributes.
-
+Lets look at the distribution of each individual variable as histograms. For 
+each variable, a summary of the data distribution is given below the plot.
 
 ```{r, echo = FALSE}
-win_data[, 'quality'] <- as.factor(win_data[, 'quality'])
-summary(win_data)
+## Function to create a histogram
+create_histogram = function(dat_set, variabl, binwidth = 0.25) {
+                    return( ggplot(aes_string(x = variabl), data = dat_set) + 
+                            geom_histogram(bins = 35, binwidth = binwidth,
+                                           color = 'black', fill = '#F79420') )
+}
+
 
 ```
 
 
-Based on the above summary statistics, some outlier like data points can be 
-observed specially for the attributes - residual.sugar, free.sulfur.dioxide and 
-total.sulfur.dioxide. In this three attributes, the maximum value are 
-significantly higher than the corresponding third quartile values. However, to 
-verify whether those max points are outliers or not, a detailed analysis are 
-required. Also, the statistics show that the majority of white wines fall into 
-5 and 6 quality categories.  
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram(win_data, 'fixed.acidity')
 
+```
+
+The data in the fixed.acidity variable is normaly distributed with following 
+statistics.
+
+```{r, echo = FALSE}
+var = win_data$fixed.acidity
+summary(var)
+```
+            
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram(win_data, "volatile.acidity", 0.05)
+
+```
+
+The data in the volatile.acidity variable is normaly distributed with following
+statistics.
+
+```{r, echo = FALSE}
+var = win_data$volatile.acidity
+summary(var)
+```
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram(win_data, "citric.acid", 0.05)
+
+```
+
+The data in the citric.acid variable is normaly distributed with following 
+statistics.
+```{r, echo = FALSE}
+var = win_data$citric.acid
+summary(var)
+```
+
+
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram(win_data, "residual.sugar", 1)
+
+```
+
+The data in the residual.sugar variable is left skewed with following 
+statistics.
+```{r, echo = FALSE}
+var = win_data$residual.sugar
+summary(var)
+```
+
+When comparing the maximum value residual.sugar content with 3rd quartile, there
+is a huge diffrent can be observable. This is probably due to outliers. In the 
+following, plot the outliers were removed. 
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+win_data_x = win_data[win_data$residual.sugar < 30,]
+
+create_histogram(win_data_x, "residual.sugar", 1)
+
+```
+
+After removing the outliers, folowing is rhe summary for residual.sugar 
+variable. Th eremoval of outliers give much better visualization for the data 
+distribution. 
+
+```{r, echo = FALSE}
+var = win_data_x$residual.sugar
+summary(var)
+```
+
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram(win_data, "chlorides", 0.007)
+
+```
+
+The data in the chlorides variable is normaly distributed with following 
+statistics. The extream valuss of chlorides are difficult to detrmine without
+further information.
+
+```{r, echo = FALSE}
+var = win_data$chlorides
+summary(var)
+```
+
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram(win_data, "free.sulfur.dioxide", 6)
+
+```
+
+The data in the free.sulfur.dioxide variable is normaly distributed with 
+following statistics.
+```{r, echo = FALSE}
+var = win_data$free.sulfur.dioxide
+summary(var)
+```
+
+In free.sulfur.dioxide also there are some potential outliers whem compare 
+maximum value with the third quartile. Therefore, the extream values should be 
+removed.
+
+```{r, echo = FALSE}
+win_data_y = win_data[win_data$free.sulfur.dioxide < 200,]
+## Call function to create a histogram
+create_histogram(win_data_y , "free.sulfur.dioxide", 6)
+
+```
+After removing extream values of free.sulfur.dioxide, following summary 
+statistics can be observable.
+
+```{r, echo = FALSE}
+var = win_data_y$free.sulfur.dioxide
+summary(var)
+```
+
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram(win_data, "total.sulfur.dioxide", 8)
+
+```
+The data in the total.sulfur.dioxide variable is normaly distributed with 
+following statistics.
+
+```{r, echo = FALSE}
+var = win_data$total.sulfur.dioxide
+summary(var)
+```
+
+
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram(win_data, "density", 0.001)
+
+```
+
+
+The data in the density variable is normaly distributed with following 
+statistics.
+
+```{r, echo = FALSE}
+var = win_data$density
+summary(var)
+```
+
+Generally, in standard conditions, the density of water is 1.00 g/cm^3. 
+Therefore, the density of a solution in which the water is the solvent, should 
+be slightly less than 1.00 g/cm^3. In the above plot we can observe at least 
+two density values greater than 1.00 g/cm^3. Therefore, we can remove those 
+outliers from the dataset to clean the dataset. Following plot wes generated 
+without the density outliers. 
+
+
+```{r, echo = FALSE}
+win_data_z = win_data[win_data$density < 1.00,]
+
+density_no_outliers = win_data_x$density
+
+## Call function to create a histogram
+create_histogram(win_data_z , "density", 0.001)
+
+```
+
+After removing extream values of density varible, following summary 
+statistics can be observable.
+
+```{r, echo = FALSE}
+var = win_data_x$density
+summary(var)
+```
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram(win_data, "pH", 0.05)
+
+```
+
+The data in the pH variable is normaly distributed with following statistics.
+Compare to other variables, the pH values show better gaussian distribution.
+
+```{r, echo = FALSE}
+var = win_data$pH
+summary(var)
+```
+
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram(win_data, "sulphates", 0.02)
+
+```
+
+The data in the sulphates variable is normaly distributed with following statistics.
+```{r, echo = FALSE}
+var = win_data$sulphates
+summary(var)
+```
+
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram(win_data, "alcohol", 0.25)
+
+```
+
+The data in the citric.acid variable is somewhat normaly distributed with 
+following statistics.
+
+```{r, echo = FALSE}
+var = win_data$alcohol
+summary(var)
+```
+
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+win_data[, 'quality'] = as.factor(win_data[, 'quality'])
+ggplot(aes(x = quality), data = win_data) + 
+        geom_bar(color = 'black', fill = '#F79420') 
+
+```
+
+The data in the quality variable is normaly distributed with following 
+statistics.
+
+```{r, echo = FALSE}
+var = win_data$quality
+summary(var)
+```
+Statistics of quality variable show that the majority of white wines fall into 
+5 and 6 quality categories.
 
 
 ### Bivariate Plots Section
@@ -293,135 +433,46 @@ For example, correlation coefficients of, alcohol vs density, residual sugar
 vs density, total sulfur dioxide vs density, total sulfur dioxide vs free sulfur 
 dioxide are -0.78, 0.84, 0.53 and 0.62, respectively.
 
-Let's look at each of those high to moderate relationships separately.
+In this section, each of those high to moderate relationships were investigated 
+after removing outliers if any. 
 
 ```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
-## Generating bi-variate plots
-
-x = win_data$alcohol
-y = win_data$density
-p1 = ggplot(aes(x = alcohol, y = density ), data = win_data) + 
-        geom_point()+
-        ylab("Density (g/cm^3)") +
-        xlab("Alcohol %") +
-        ggtitle("Alcohol % vs density", 
-                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
-
-x = win_data$residual.sugar
-y = win_data$density
-p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data) + 
-        geom_point()+
-        ylab("Density (g/cm^3)") +
-        xlab("Residual sugar concentration (g/dm^3)") +
-        ggtitle(" Residual sugar vs density", 
-                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
-x = win_data$total.sulfur.dioxide
-y = win_data$density
-
-p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data) + 
-        geom_point() +
-        xlab("Total sulfur dioxide (g/dm^3)") +
-        ylab("Density (g/cm^3)") +
-        ggtitle("Total sulfur dioxide vs density", 
-                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
-
-
-y = win_data$free.sulfur.dioxide 
-x = win_data$total.sulfur.dioxide
-p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), 
-            data = win_data) + 
-        geom_point() +
-        xlab("Total sulfur dioxide (g/dm^3)") +
-        ylab("Free sulfur dioxide (g/dm^3)") +
-        ggtitle("Total vs free sulfur dioxide", 
-                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+ 
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
-
-grid.arrange(p1, p2, p3, p4, ncol = 2)
-
-
+## Function to create a histogram
+create_boxplot = function(dat_set, x = 'quality', y, x_lab, y_lab, 
+                          unit = 'g/dm^3') {
+    
+    
+                    return( ggplot(data = dat_set, aes_string(x = x, y = y) ) + 
+                            geom_boxplot() +
+                            xlab(x_lab) +
+                            ylab(paste(y_lab, unit)) +
+                            ggtitle(paste(x_lab, 'vs', y_lab)) +
+                            theme(plot.title = element_text(size=11, hjust=0.5,
+                                                            face = "bold"),
+                            axis.title = element_text(size=10, hjust=0.5)))
+}
 ```
-
-The data distribution in above plots shows fairly good correlations with 
-R^2 > 0.5.
-
-As noticed in the uni-variant analysis in the previous section, there seems 
-to be a few outliers observable in the dataset. 
-
-Generally, in standard conditions, the density of water is 1.00 g/cm^3. 
-Therefore, the density of a solution in which the water is the solvent, should 
-be slightly less than 1.00 g/cm^3. In the above plots we can observe at least 
-two density values greater than 1.00 g/cm^3. Therefore, we can remove those 
-outliers from the dataset to clean the dataset. Following plots were generated 
-without the density outliers. Also, extreme values for sulfur dioxides can be 
-removed.
-
 
 ```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 ## Generating bi-variate plots after removing the outliers
 
-## Remove the density > 1.00
-win_data1 = win_data[win_data$density < 1.00,]
+win_data_w = win_data1[win_data1$total.sulfur.dioxide < 300,]
 
-x = win_data1$alcohol
-y = win_data1$density
-p1 = ggplot(aes(x = alcohol, y = density ), data = win_data1) + 
-        geom_point()+
-        ylab("Density (g/cm^3)") +
-        xlab("Alcohol %") +
-        ggtitle("Alcohol % vs density", 
-                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
+p11 = create_boxplot(win_data_z, 'quality', 'density', 'Quality', 'Density', 
+                     '(g/cm^3)')
 
-x = win_data1$residual.sugar
-y = win_data1$density
-p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data1) + 
-        geom_point()+
-        ylab("Density (g/cm^3)") +
-        xlab("Residual sugar concentration (g/dm^3)") +
-        ggtitle(" Residual sugar vs density", 
-                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
+p12 = create_boxplot(win_data1, 'quality', 'alcohol', 'Quality', 'Alcohol %', '')
 
-## Remove extreme values of total sulfur dioxide
-win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
-x = win_data2$total.sulfur.dioxide
-y = win_data2$density
+p13 = create_boxplot(win_data_x, 'quality', 'residual.sugar', 'Quality', 
+               'Residual sugar concentration')
+p14 = create_boxplot(win_data_w, 'quality', 'total.sulfur.dioxide', 'Quality', 
+               'Total sulfur dioxide')
 
-p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data2) + 
-        geom_point() +
-        xlab("Total sulfur dioxide (g/dm^3)") +
-        ylab("Density (g/cm^3)") +
-        ggtitle("Total sulfur dioxide vs density", 
-                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
+p15 = create_boxplot(win_data_y, 'quality', 'free.sulfur.dioxide', 'Quality', 
+               'Free sulfur dioxide')
 
-## Remove extreme values of free sulfur dioxide
-win_data3 = win_data2[win_data2$free.sulfur.dioxide < 200,]
 
-y = win_data3$free.sulfur.dioxide 
-x = win_data3$total.sulfur.dioxide
-p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide), 
-            data = win_data3) + 
-        geom_point() +
-        xlab("Total sulfur dioxide (g/dm^3)") +
-        ylab("Free sulfur dioxide (g/dm^3)") +
-        ggtitle("Total vs free sulfur dioxide", 
-                subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+ 
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
-
-grid.arrange(p1, p2, p3, p4, ncol = 2)
+grid.arrange(p11, p12, p13, p14, p15, ncol = 2)
 
 
 ```
