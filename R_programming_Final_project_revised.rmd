@@ -37,7 +37,7 @@ experimentally for different wine types.
 
 The dataset contains following attributes.
 
-```{r echo=FALSE, Load_the_Data}
+```{r echo = FALSE, Load_the_Data}
 # Load the Data
 #getwd()
 #list.files()
@@ -46,12 +46,9 @@ names(win_data)
 
 ```
 The size of the dataset is as follows.
-```{r, echo=FALSE}
-## subset only omportant varibles
-win_data = win_data[c("fixed.acidity", "volatile.acidity", "citric.acid", 
-                      "residual.sugar", "chlorides", "free.sulfur.dioxide", 
-                      "total.sulfur.dioxide", "density", "pH","sulphates",
-                      "alcohol", "quality")]
+```{r, echo = FALSE}
+## Exclude the unwanted variable
+win_data$X = NULL
 
 dim(win_data)
 ```
@@ -123,7 +120,7 @@ quality:
 In order to get a general idea of the data, the following snippet of data was 
 obtained (only the first six records of the dataset).
 
-```{r, echo=FALSE}
+```{r, echo = FALSE}
 head(win_data)
 ```
 
@@ -132,61 +129,93 @@ head(win_data)
 
 Lets look at the distribution of each individual variable as histograms.
 
+```{r, echo = FALSE, fig.height = 7}
+## Function to create a histogram
+create_histogram = function(variabl, binwidth = 0.25) {
+                    return( ggplot(aes_string(x = variabl), data = win_data) + 
+                            geom_histogram(bins = 35, binwidth = binwidth,
+                                           color = 'black', fill = '#F79420') )
+                    }
+```
 
-```{r, echo=FALSE, fig.height= 7}
 
-## Making histograms and barcharts for the main atributes
-p1 = ggplot(aes(x = fixed.acidity), data = win_data) + 
-        geom_histogram(bins = 35, binwidth = .25, color = 'black', 
-                       fill = '#F79420')
-
-p2 = ggplot(aes(x = volatile.acidity), data = win_data) + 
-        geom_histogram(bins = 35, binwidth = .05, color = 'black', 
-                       fill = '#F79420') 
-
-p3 = ggplot(aes(x = citric.acid), data = win_data) + 
-        geom_histogram(bins = 35, binwidth = .05, color = 'black', 
-                       fill = '#F79420') 
-
-p4 = ggplot(aes(x = residual.sugar), data = win_data) + 
-        geom_histogram(bins = 35, binwidth = 1, color = 'black', 
-                       fill = '#F79420')
-
-p5 = ggplot(aes(x = chlorides), data = win_data) + 
-        geom_histogram(bins = 35, binwidth = .007, color = 'black', 
-                       fill = '#F79420') 
-
-p6 = ggplot(aes(x = free.sulfur.dioxide), data = win_data) + 
-        geom_histogram(bins = 35, binwidth = 6, color = 'black', 
-                       fill = '#F79420')
-
-p7 =  ggplot(aes(x = total.sulfur.dioxide), data = win_data) + 
-        geom_histogram(bins = 35, binwidth = 8, color = 'black', 
-                       fill = '#F79420')
-
-p8 = ggplot(aes(x = density), data = win_data) + 
-        geom_histogram(bins = 35, binwidth = .001, color = 'black', 
-                       fill = '#F79420')
-
-p9 =  ggplot(aes(x = pH), data = win_data) + 
-        geom_histogram(bins = 35, binwidth = .05, color = 'black', 
-                       fill = '#F79420')
-
-p10 = ggplot(aes(x = sulphates), data = win_data) + 
-        geom_histogram(bins = 35, binwidth = .02, color = 'black', 
-                       fill = '#F79420')
-
-p11 = ggplot(aes(x = alcohol), data = win_data) + 
-        geom_histogram(bins = 35, binwidth = .25, color = 'black', 
-                       fill = '#F79420') 
-
-p12 = ggplot(aes(x = quality), data = win_data) + 
-        geom_bar(color = 'black', fill = '#F79420') 
-    
-
-grid.arrange(p1, p2, p3,p4, p5, p6, p7, p8, p9, p10, p11, p12, ncol = 3)
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram('fixed.acidity')
 
 ```
+            
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram("volatile.acidity", 0.05)
+
+```
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram("citric.acid", 0.05)
+
+```
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram("residual.sugar", 1)
+
+```
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram("chlorides", 0.007)
+
+```
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram("free.sulfur.dioxide", 6)
+
+```
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram("total.sulfur.dioxide", 8)
+
+```
+
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram("density", 0.001)
+
+```
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram("pH", 0.05)
+
+```
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram("sulphates", 0.02)
+
+```
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram("alcohol", 0.25)
+
+```
+
+```{r, echo = FALSE}
+## Call function to create a histogram
+create_histogram("quality", 1)
+
+```
+
+
+
+
+
 
 
 All the attributes in the dataset are numerical. However, The 'quality' 
@@ -203,7 +232,7 @@ most Gaussian like distribution.
 The following summary shows the major descriptive statistics of the attributes.
 
 
-```{r, echo=FALSE}
+```{r, echo = FALSE}
 win_data[, 'quality'] <- as.factor(win_data[, 'quality'])
 summary(win_data)
 
@@ -232,7 +261,7 @@ for these type of analysis,because, all the relationships between variables can
 be easily identified. It is helpful to implement further analysis of the 
 dataset. 
 
-```{r echo=FALSE, fig.height=9, fig.width=9, warning=FALSE, message=FALSE}
+```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 ## Creating a correlation matrix plot
 
 ggpairs(win_data)
@@ -253,7 +282,7 @@ diagram the density plots are displayed for each attribute.
 
 
 ### Bivariate Analysis
-```{r,echo=FALSE, fig.height=9, fig.width=9, warning=FALSE, message=FALSE}
+```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 #coreletion = cor(win_data[2:12])
 #coreletion = coreletion[coreletion > 0.5]
 #coreletion
@@ -266,7 +295,7 @@ dioxide are -0.78, 0.84, 0.53 and 0.62, respectively.
 
 Let's look at each of those high to moderate relationships separately.
 
-```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=5}
+```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 ## Generating bi-variate plots
 
 x = win_data$alcohol
@@ -335,7 +364,7 @@ without the density outliers. Also, extreme values for sulfur dioxides can be
 removed.
 
 
-```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=5}
+```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 ## Generating bi-variate plots after removing the outliers
 
 ## Remove the density > 1.00
@@ -418,7 +447,7 @@ see the differences clearly (created a new variable 'Rank').
 * Quality 5 to 6 = medium quality
 * Quality 7 to 10 = high quality
 
-```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=6}
+```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 ## Creating a new variable called Rank.
 win_data$Rank =  ifelse(win_data$quality == '3', 'low',
                         ifelse(win_data$quality == '4', 'low',
@@ -438,7 +467,7 @@ win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
 win_data3 = win_data2[win_data2$free.sulfur.dioxide < 200,]
 ```
 
-```{r,echo=FALSE,  warning=FALSE, message=FALSE, fig.height=6}
+```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 ## Generating bi-variate plots grouping by rank
 
 x = win_data1$alcohol
@@ -511,7 +540,7 @@ patterns in that particular plot.
 #### Behaviours of the quality of wines related to the changes of alcohol % and density
 
 
-```{r echo=FALSE, Plot_One}
+```{r, echo = FALSE, Plot_One}
 ## reprint the plot
 p1
 ```
@@ -526,7 +555,7 @@ the alcohol percentage is high and density is low with few exceptions.
 
 
 #### Behaviours of the quality of wines related to the changes of residual sugar concentration and density 
-```{r echo=FALSE, Plot_Two}
+```{r, echo = FALSE, Plot_Two}
 ## reprint the plot
 p2
 ```
@@ -542,7 +571,7 @@ concentrations are low with some exceptions.
 
 #### Behaviours of the quality of wines related to the changes of total sulfur dioxide concentration and density
 
-```{r echo=FALSE, Plot_Three}
+```{r, echo = FALSE, Plot_Three}
 ## reprint the plot
 p3 
 
@@ -566,7 +595,7 @@ The summary include the correlation coefficient (0.92), y-intercept (1.00), and
 slopes for each parameter for the model along with other important parameters. 
 
 
-```{r echo=FALSE, multiple_linearr_regression0}
+```{r, echo = FALSE, multiple_linearr_regression0}
 # Multiple Linear Regression model
 fit <- lm(density ~ total.sulfur.dioxide + residual.sugar + 
               alcohol, data=win_data3)
@@ -605,7 +634,7 @@ Since, all of these assumptions are fulfilled by the selected variables in the
 model, the validity of the model is confirmed.
 
 
-```{r echo=FALSE, multiple_linearr_regression1}
+```{r, echo = FALSE, multiple_linearr_regression1}
 ## getting parameters to validate the model
 par(mfrow =c(2,2))
 plot(fit)
@@ -616,7 +645,7 @@ plot(fit)
 The following plot shows the predicted densities using the regression model 
 derived in above section.
 
-```{r echo=FALSE, multiple_linearr_regression2}
+```{r, echo = FALSE, multiple_linearr_regression2}
 ## generating a new variable (predicted density)
 intercept =  1.004e+00
 coef1 =  5.861e-06  
@@ -631,7 +660,7 @@ win_data3$predict_density = win_data3$total.sulfur.dioxide*(coef1) +
 
 ```
 
-```{r echo=FALSE, multiple_linearr_regression3}
+```{r, echo = FALSE, multiple_linearr_regression3}
 ## Generating simple linear regression model
 fit2 = lm(predict_density ~ density, data = win_data3)
 
