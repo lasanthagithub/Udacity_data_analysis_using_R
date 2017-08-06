@@ -1,5 +1,5 @@
-Determination of white wine quality by exploratory data analysis and multiple 
-linear regression model using R
+## Determination of white wine quality by exploratory data analysis and multiple 
+## linear regression model using R
 ========================================================
 
 #### By Lasantha Rathnayake
@@ -128,7 +128,7 @@ All the attributes in the dataset are numerical. However, The 'quality'
 attribute was factorized, because the it is used to rank the wine quality.
 
 
-### Univariate Plots and analysis
+### Univariate Plots Selection and analysis
 
 Lets look at the distribution of each individual variable as histograms. For 
 each variable, a summary of the data distribution is given below the plot.
@@ -151,7 +151,7 @@ create_histogram(win_data, 'fixed.acidity')
 
 ```
 
-The data in the fixed.acidity variable is normaly distributed with following 
+The data in the fixed.acidity variable is normally distributed with following 
 statistics.
 
 ```{r, echo = FALSE}
@@ -165,7 +165,7 @@ create_histogram(win_data, "volatile.acidity", 0.05)
 
 ```
 
-The data in the volatile.acidity variable is normaly distributed with following
+The data in the volatile.acidity variable is normally distributed with following
 statistics.
 
 ```{r, echo = FALSE}
@@ -179,7 +179,7 @@ create_histogram(win_data, "citric.acid", 0.05)
 
 ```
 
-The data in the citric.acid variable is normaly distributed with following 
+The data in the citric.acid variable is normally distributed with following 
 statistics.
 ```{r, echo = FALSE}
 var = win_data$citric.acid
@@ -202,7 +202,7 @@ summary(var)
 ```
 
 When comparing the maximum value residual.sugar content with 3rd quartile, there
-is a huge diffrent can be observable. This is probably due to outliers. In the 
+is a huge different can be observable. This is probably due to outliers. In the 
 following, plot the outliers were removed. 
 
 ```{r, echo = FALSE}
@@ -213,8 +213,8 @@ create_histogram(win_data_x, "residual.sugar", 1)
 
 ```
 
-After removing the outliers, folowing is rhe summary for residual.sugar 
-variable. Th eremoval of outliers give much better visualization for the data 
+After removing the outliers, following is the summary for residual.sugar 
+variable. Th removal of outliers give much better visualization for the data 
 distribution. 
 
 ```{r, echo = FALSE}
@@ -229,8 +229,8 @@ create_histogram(win_data, "chlorides", 0.007)
 
 ```
 
-The data in the chlorides variable is normaly distributed with following 
-statistics. The extream valuss of chlorides are difficult to detrmine without
+The data in the chlorides variable is normally distributed with following 
+statistics. The extreme values of chlorides are difficult to determine without
 further information.
 
 ```{r, echo = FALSE}
@@ -245,15 +245,15 @@ create_histogram(win_data, "free.sulfur.dioxide", 6)
 
 ```
 
-The data in the free.sulfur.dioxide variable is normaly distributed with 
+The data in the free.sulfur.dioxide variable is normally distributed with 
 following statistics.
 ```{r, echo = FALSE}
 var = win_data$free.sulfur.dioxide
 summary(var)
 ```
 
-In free.sulfur.dioxide also there are some potential outliers whem compare 
-maximum value with the third quartile. Therefore, the extream values should be 
+In free.sulfur.dioxide also there are some potential outliers when compare 
+maximum value with the third quartile. Therefore, the extreme values should be 
 removed.
 
 ```{r, echo = FALSE}
@@ -262,7 +262,7 @@ win_data_y = win_data[win_data$free.sulfur.dioxide < 200,]
 create_histogram(win_data_y , "free.sulfur.dioxide", 6)
 
 ```
-After removing extream values of free.sulfur.dioxide, following summary 
+After removing extreme values of free.sulfur.dioxide, following summary 
 statistics can be observable.
 
 ```{r, echo = FALSE}
@@ -276,7 +276,7 @@ summary(var)
 create_histogram(win_data, "total.sulfur.dioxide", 8)
 
 ```
-The data in the total.sulfur.dioxide variable is normaly distributed with 
+The data in the total.sulfur.dioxide variable is normally distributed with 
 following statistics.
 
 ```{r, echo = FALSE}
@@ -293,7 +293,7 @@ create_histogram(win_data, "density", 0.001)
 ```
 
 
-The data in the density variable is normaly distributed with following 
+The data in the density variable is normally distributed with following 
 statistics.
 
 ```{r, echo = FALSE}
@@ -305,7 +305,7 @@ Generally, in standard conditions, the density of water is 1.00 g/cm^3.
 Therefore, the density of a solution in which the water is the solvent, should 
 be slightly less than 1.00 g/cm^3. In the above plot we can observe at least 
 two density values greater than 1.00 g/cm^3. Therefore, we can remove those 
-outliers from the dataset to clean the dataset. Following plot wes generated 
+outliers from the dataset to clean the dataset. Following plot was generated 
 without the density outliers. 
 
 
@@ -319,7 +319,7 @@ create_histogram(win_data_z , "density", 0.001)
 
 ```
 
-After removing extream values of density varible, following summary 
+After removing extreme values of density variable, following summary 
 statistics can be observable.
 
 ```{r, echo = FALSE}
@@ -333,8 +333,8 @@ create_histogram(win_data, "pH", 0.05)
 
 ```
 
-The data in the pH variable is normaly distributed with following statistics.
-Compare to other variables, the pH values show better gaussian distribution.
+The data in the pH variable is normally distributed with following statistics.
+Compare to other variables, the pH values show better Gaussian distribution.
 
 ```{r, echo = FALSE}
 var = win_data$pH
@@ -348,7 +348,7 @@ create_histogram(win_data, "sulphates", 0.02)
 
 ```
 
-The data in the sulphates variable is normaly distributed with following statistics.
+The data in the sulfates variable is normally distributed with following statistics.
 ```{r, echo = FALSE}
 var = win_data$sulphates
 summary(var)
@@ -361,7 +361,7 @@ create_histogram(win_data, "alcohol", 0.25)
 
 ```
 
-The data in the citric.acid variable is somewhat normaly distributed with 
+The data in the citric.acid variable is somewhat normally distributed with 
 following statistics.
 
 ```{r, echo = FALSE}
@@ -378,7 +378,7 @@ ggplot(aes(x = quality), data = win_data) +
 
 ```
 
-The data in the quality variable is normaly distributed with following 
+The data in the quality variable is normally distributed with following 
 statistics.
 
 ```{r, echo = FALSE}
@@ -389,7 +389,7 @@ Statistics of quality variable show that the majority of white wines fall into
 5 and 6 quality categories.
 
 
-### Bivariate Plots Section
+### Bivariate Plots Section and Analysis
 
 From the uni-variant analysis in the above section, reflects some insights of 
 individual attributes in the dataset. In this section, correlations between the 
@@ -420,8 +420,6 @@ corresponding correlation coefficients are shown.Along the diagonal of the
 diagram the density plots are displayed for each attribute. 
 
 
-
-### Bivariate Analysis
 ```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 #coreletion = cor(win_data[2:12])
 #coreletion = coreletion[coreletion > 0.5]
@@ -433,8 +431,18 @@ For example, correlation coefficients of, alcohol vs density, residual sugar
 vs density, total sulfur dioxide vs density, total sulfur dioxide vs free sulfur 
 dioxide are -0.78, 0.84, 0.53 and 0.62, respectively.
 
-In this section, each of those high to moderate relationships were investigated 
-after removing outliers if any. 
+In the below sections, each of those high to moderate relationships were 
+investigated after removing outliers if any. 
+
+After preliminary removing density outliers, in alcohol % vs density and density 
+vs total sulfur dioxide relationships, the correlation coefficients are slightly 
+improved (-0.8 and 0.54, respectively). For the other relationships, taking 
+density outliers off, did not improve the correlation (refer multivariate plots 
+below to see the newly calculated correlation coefficients).
+
+Following box plots were generated to further understand the behaviors of 
+high to moderate correlated variables with the wine quality.
+
 
 ```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 ## Function to create a histogram
@@ -450,7 +458,7 @@ create_boxplot = function(dat_set, x = 'quality', y, x_lab, y_lab,
                             theme(plot.title = element_text(size=11, hjust=0.5,
                                                             face = "bold"),
                             axis.title = element_text(size=10, hjust=0.5)))
-}
+                }
 ```
 
 ```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
@@ -477,14 +485,14 @@ grid.arrange(p11, p12, p13, p14, p15, ncol = 2)
 
 ```
 
-Now the data distribution and the visualizability of the plots are improved. 
-In addition, in alcohol % vs density and density vs total sulfur dioxide 
-relationships, the correlation coefficients are slightly improved. For the other
-relationships, taking density outliers off, did not improve the correlation.
+After removing outliers identified in univariate section, data in these box 
+plots indicate still there are more outliers can be present in selected 
+variables (the black color points shows potential outliers). To remove these
+outliers further understanding the dataset needed.
 
 
 
-### Multivariate Plots Section
+### Multivariate Plots Section and Analysis
 
 Now its time to check how these relationships (shown in the above bi-variant 
 plots) affect to the wine quality. In the following plots, the attributes are 
@@ -515,12 +523,31 @@ win_data1 = win_data[win_data$density < 1.00,]
 ## Remove extreme values of total sulfur dioxide
 win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
 ## Remove extreme values of free sulfur dioxide
-win_data3 = win_data2[win_data2$free.sulfur.dioxide < 200,]
+win_data3 = win_data2[win_data2$free.sulfur.dioxide < 300,]
 ```
 
 ```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
-## Generating bi-variate plots grouping by rank
 
+
+create_boxplot = function(dat_set, x = 'quality', y, x_lab, y_lab, 
+                          unit = 'g/dm^3') {
+    
+    
+                    return( ggplot(data = dat_set, aes_string(x = x, y = y) ) + 
+                            geom_boxplot() +
+                            xlab(x_lab) +
+                            ylab(paste(y_lab, unit)) +
+                            ggtitle(paste(x_lab, 'vs', y_lab)) +
+                            theme(plot.title = element_text(size=11, hjust=0.5,
+                                                            face = "bold"),
+                            axis.title = element_text(size=10, hjust=0.5)))
+                }
+
+```
+
+```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
+
+## Generating multi-variate plots grouping by rank
 x = win_data1$alcohol
 y = win_data1$density
 p1 = ggplot(aes(x = alcohol, y = density),  data = win_data1) + 
@@ -577,16 +604,14 @@ grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 ```
 
+
 The above four plots show, how the quality (Rank) of wine behave with different
 attributes. The observations of the plots are discussed below except for the 
 plot total vs free sulfur dioxide concentrations, due to absence of identifiable 
 patterns in that particular plot.
 
 
-
-### Multivariate Analysis
-
-
+### Final Plots and Summary
 
 #### Behaviours of the quality of wines related to the changes of alcohol % and density
 
@@ -635,7 +660,7 @@ dioxide content (about 75 to 125 g/dm^3) give high quality wines.
 
 ### Creating a Multiple linear regression model
 
-During above muti-variant analysis, it was noted that density plays major role 
+During above multi-variant analysis, it was noted that density plays major role 
 of determining wine quality with variation of the other parameters such as sugar
 content, alcohol percentage and sulfur dioxide content. Therefore, multiple 
 regression analysis was carried out to determine a relationship, if any, 
