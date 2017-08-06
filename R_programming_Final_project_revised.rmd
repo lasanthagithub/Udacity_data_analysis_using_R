@@ -1,8 +1,7 @@
-## Determination of white wine quality by exploratory data analysis and multiple 
-## linear regression model using R
-========================================================
+## Determination of white wine quality by exploratory data analysis and multiple linear regression model using R
 
-#### By Lasantha Rathnayake
+
+### By Lasantha Rathnayake
 
 In this exploratory data analysis study, white wine Quality data is examined.
 
@@ -464,12 +463,12 @@ create_boxplot = function(dat_set, x = 'quality', y, x_lab, y_lab,
 ```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 ## Generating bi-variate plots after removing the outliers
 
-win_data_w = win_data1[win_data1$total.sulfur.dioxide < 300,]
+win_data_w = win_data[win_data$total.sulfur.dioxide < 300,]
 
 p11 = create_boxplot(win_data_z, 'quality', 'density', 'Quality', 'Density', 
                      '(g/cm^3)')
 
-p12 = create_boxplot(win_data1, 'quality', 'alcohol', 'Quality', 'Alcohol %', '')
+p12 = create_boxplot(win_data, 'quality', 'alcohol', 'Quality', 'Alcohol %', '')
 
 p13 = create_boxplot(win_data_x, 'quality', 'residual.sugar', 'Quality', 
                'Residual sugar concentration')
@@ -526,24 +525,7 @@ win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
 win_data3 = win_data2[win_data2$free.sulfur.dioxide < 300,]
 ```
 
-```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 
-
-create_boxplot = function(dat_set, x = 'quality', y, x_lab, y_lab, 
-                          unit = 'g/dm^3') {
-    
-    
-                    return( ggplot(data = dat_set, aes_string(x = x, y = y) ) + 
-                            geom_boxplot() +
-                            xlab(x_lab) +
-                            ylab(paste(y_lab, unit)) +
-                            ggtitle(paste(x_lab, 'vs', y_lab)) +
-                            theme(plot.title = element_text(size=11, hjust=0.5,
-                                                            face = "bold"),
-                            axis.title = element_text(size=10, hjust=0.5)))
-                }
-
-```
 
 ```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 
@@ -624,7 +606,7 @@ p1
 Based on the data in the above plot, the data points corresponding to the 
 high quality (red color points) mainly clustered towards the bottom right side 
 of the plot. This behavior indicates the quality of wine is generally high when
-the alcohol percentage is high and density is low with few exceptions. 
+the alcohol percentage is high and density is low with a few exceptions. 
 
 
 
@@ -658,7 +640,7 @@ quality wines with the others. Generally, the low density and somewhat sulfur
 dioxide content (about 75 to 125 g/dm^3) give high quality wines.
 
 
-### Creating a Multiple linear regression model
+#### Creating a Multiple linear regression model
 
 During above multi-variant analysis, it was noted that density plays major role 
 of determining wine quality with variation of the other parameters such as sugar
@@ -695,7 +677,7 @@ All the p-values for model parameters (y-intercept and slopes) are less than
 indicates the robustness of the model.
 
  
-### Validating the model
+#### Validating the model
 
 We can determine the validity of the model by analyzing the following 
 characterization plots and the histograms in the uni-variant section.
@@ -716,7 +698,7 @@ par(mfrow =c(2,2))
 plot(fit)
 ```
 
-### Display the model with calculated and measured wine density data
+#### Displaying the model with calculated and measured wine density data
 
 The following plot shows the predicted densities using the regression model 
 derived in above section.
