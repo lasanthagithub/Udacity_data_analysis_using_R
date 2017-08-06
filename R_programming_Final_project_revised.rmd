@@ -38,8 +38,6 @@ The dataset contains following attributes.
 
 ```{r echo = FALSE, Load_the_Data}
 # Load the Data
-#getwd()
-#list.files()
 win_data =  read.csv('wineQualityWhites.csv', sep = ',')
 names(win_data)
 
@@ -404,14 +402,6 @@ dataset.
 ## Creating a correlation matrix plot
 
 ggpairs(win_data)
-
-# ggpairs(win_data[2:13], upper = list(continuous = "cor", combo = "dot", 
-#   discrete ="facetbar", na = "na"), lower = list(continuous = "points", 
-#   combo = "facethist", discrete = "facetbar", na = "na"), 
-#   diag = list(continuous =  "densityDiag", discrete = "barDiag", 
-#        na = "naDiag"),
-#   xlab = NULL, ylab = NULL, axisLabels = c("show", "internal", "none"))
-
 ```
 
 In the above figure, the scatter plots each attributes with the others and the 
@@ -419,11 +409,6 @@ corresponding correlation coefficients are shown.Along the diagonal of the
 diagram the density plots are displayed for each attribute. 
 
 
-```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
-#coreletion = cor(win_data[2:12])
-#coreletion = coreletion[coreletion > 0.5]
-#coreletion
-```
 When examine the correlation coefficient for each relationship in above figure, 
 some of the attributes seems to be high to moderately correlated to each other. 
 For example, correlation coefficients of, alcohol vs density, residual sugar 
@@ -659,13 +644,6 @@ fit <- lm(density ~ total.sulfur.dioxide + residual.sugar +
               alcohol, data=win_data3)
 summary(fit) # show the summary of results
 
-#coefficients(fit) # model coefficients
-#confint(fit, level=0.95) # CIs for model parameters 
-#fitted(fit) # predicted values
-#residuals(fit) # residuals
-#anova(fit) # anova table 
-#vcov(fit) # covariance matrix for model parameters 
-#influence(fit) # regression diagnostics
 ```
 
 In this multiple linear regression model, the correlation coefficient of the 
@@ -729,8 +707,6 @@ ggplot(aes(density , predict_density), data = win_data3) +
     geom_abline(intercept = coef(fit2)[1], slope = coef(fit2)[2], col='blue')+
     xlab("Density (g/cm^3)") +
     ylab("Predicted density (g/cm^3)") 
-
-#coef(fit2)
 
 ```
 
