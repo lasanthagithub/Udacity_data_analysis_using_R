@@ -581,6 +581,7 @@ grid.arrange(p1, p2, p3, p4, ncol = 2)
 The above four plots show, how the quality (Rank) of wine behave with different
 attributes. 
 
+
 #### Creating a Multiple linear regression model
 
 During above multivariate analysis, it was noted that density plays major role 
@@ -596,7 +597,7 @@ slopes for each parameter for the model along with other important parameters.
 
 ```{r, echo = FALSE, multiple_linearr_regression0}
 # Multiple Linear Regression model
-fit <- lm(density ~ total.sulfur.dioxide + residual.sugar + 
+fit = lm(density ~ total.sulfur.dioxide + residual.sugar + 
               alcohol, data=win_data3)
 summary(fit) # show the summary of results
 
@@ -661,13 +662,15 @@ win_data3$predict_density = win_data3$total.sulfur.dioxide * (coef1) +
 fit2 = lm(predict_density ~ density, data = win_data3)
 
 ## Plot the model
-ggplot(aes(density , predict_density), data = win_data3) +
-    geom_point(aes(color= Rank), alpha = 1/3, position =
-                   position_jitter(h = 0)) +
-    geom_abline(intercept = coef(fit2)[1], slope = coef(fit2)[2], col='blue') +
-    xlab("Density (g/cm^3)") +
-    ylab("Predicted density (g/cm^3)") 
+p_regre = ggplot(aes(density , predict_density), data = win_data3) +
+            geom_point(aes(color= Rank), alpha = 1/3, position =
+                           position_jitter(h = 0)) +
+            geom_abline(intercept = coef(fit2)[1], slope = coef(fit2)[2], 
+                        col='blue') +
+            xlab("Density (g/cm^3)") +
+            ylab("Predicted density (g/cm^3)") 
 
+p_regre
 ```
 
 
@@ -678,7 +681,6 @@ different colors.Based on this model, the wine quality can be determined for
 most of the wines by their density. However, more detailed analysis and 
 classification such as machine learning techniques should be carried out to 
 improve the model and to increase the accuracy of the model. 
-
 
 
 
@@ -717,21 +719,24 @@ the quality of a wine type is high when the density and the residual sugar
 concentrations are low with some exceptions.
 
 
-#### Behaviours of the quality of wines related to the changes of total sulfur dioxide concentration and density
+#### Behaviours of the quality of wines related to the changes of density
 
 ```{r, echo = FALSE, Plot_Three}
 ## reprint the plot
-p3 
+p11 
 
 ```
 
+In the above plot (Quality vs Density), the median values of density of each
+quality category, seemed to have a trend. That is when the density is low, the
+quality of wine is high in general. This behavior further support with the 
+observations  and validate the multiple linear regression model generated in 
+multivariate section. 
 
-Similar to previous two plots, this plot also moderately differentiate high 
-quality wines with the others. Generally, the low density and somewhat sulfur 
-dioxide content (about 75 to 125 g/dm^3) give high quality wines.
-
-
-
+As a conclusion, the selected plots above provide sufficient information to
+validate the hypothesis that the quality of a wine can be determine by 
+comparing to the density value of the particular wine. High quality wines have 
+lower densities in general.
 
 
 ### Reflection
@@ -747,11 +752,26 @@ relationship as expected (R^2 = -0.16).
 Density of seems to have better correlation between sugar, alcohol and sulfur 
 dioxide content. Based on the these relationships, using density and other 
 mentioned variables, a multiple linear regression model was generated. This 
-generated model can be used to determine the wine quality. However, the model 
-needs to be improved to get accurate predictions. Other classification 
-techniques such that techniques in The machine-leaning methods can be used to 
-improve this model or define a separate more accurate model. Some discrepancies
-of data quality observed, therefore, the validity and quality of the data 
-should be examined before doing further analysis with the dataset.
+generated model can be used to determine the wine quality. 
+
+One of the difficulty of this dataset that someone can face into is lack of 
+technical background of chemical and physical properties of substances. Because, 
+variables are in this dataset is highly technical. Fortunately, I had the 
+required technical background. Therefore, I was able to quickly identify the 
+discrepancies in the data in some variables. For example, the density values of
+wine cannot possibly exceed 1.00 g/cm^3 due to the contents/ingredients in the 
+wine solutions (liquid). These type of errors of data cannot identify without
+a knowledge of specific technical limitation of the data. In this case I was 
+able to successfully identify and eliminate the errors of some data. 
+
+Since there are Some discrepancies in some data, the validity and 
+quality of the data should be examined before doing further analysis with the 
+dataset.
+
+As a future work, the model proposed above should be improved to get accurate 
+predictions.Other classification techniques such that techniques in The 
+machine-leaning methods can be used to improve this model or define a separate 
+more accurate model. 
+
 
 
