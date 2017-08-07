@@ -207,7 +207,7 @@ following, plot the outliers were removed.
 
 ```{r, echo = FALSE}
 ## Call function to create a histogram
-win_data_x = win_data[win_data$residual.sugar < 30,]
+win_data_x = win_data[win_data$residual.sugar < 30, ]
 
 create_histogram(win_data_x, "residual.sugar", 1)
 
@@ -257,7 +257,7 @@ maximum value with the third quartile. Therefore, the extreme values should be
 removed.
 
 ```{r, echo = FALSE}
-win_data_y = win_data[win_data$free.sulfur.dioxide < 200,]
+win_data_y = win_data[win_data$free.sulfur.dioxide < 200, ]
 ## Call function to create a histogram
 create_histogram(win_data_y , "free.sulfur.dioxide", 6)
 
@@ -312,12 +312,12 @@ without the density outliers.
 
 
 ```{r, echo = FALSE}
-win_data_z = win_data[win_data$density < 1.00,]
+win_data_z = win_data[win_data$density < 1.00, ]
 
 density_no_outliers = win_data_x$density
 
 ## Call function to create a histogram
-create_histogram(win_data_z , "density", 0.001)
+create_histogram(win_data_z, "density", 0.001)
 
 ```
 
@@ -374,7 +374,7 @@ summary(var)
 
 ```{r, echo = FALSE}
 ## Call function to create a histogram
-win_data[, 'quality'] = as.factor(win_data[, 'quality'])
+win_data[ , 'quality'] = as.factor(win_data[ , 'quality'])
 ggplot(aes(x = quality), data = win_data) + 
         geom_bar(color = 'black', fill = '#F79420') 
 
@@ -445,16 +445,16 @@ create_boxplot = function(dat_set, x = 'quality', y, x_lab, y_lab,
                             xlab(x_lab) +
                             ylab(paste(y_lab, unit)) +
                             ggtitle(paste(x_lab, 'vs', y_lab)) +
-                            theme(plot.title = element_text(size=11, hjust=0.5,
+                            theme(plot.title = element_text(size = 11, hjust = 0.5,
                                                             face = "bold"),
-                            axis.title = element_text(size=10, hjust=0.5)))
+                            axis.title = element_text(size = 10, hjust = 0.5)))
                 }
 ```
 
 ```{r, echo = FALSE, fig.height = 9, fig.width = 9, message = FALSE}
 ## Generating bi-variate plots after removing the outliers
 
-win_data_w = win_data[win_data$total.sulfur.dioxide < 300,]
+win_data_w = win_data[win_data$total.sulfur.dioxide < 300, ]
 
 p11 = create_boxplot(win_data_z, 'factor(quality)', 'density', 'Quality', 'Density', 
                      '(g/cm^3)')
@@ -508,11 +508,11 @@ win_data$Rank =  ifelse(win_data$quality == '3', 'low',
 
 ## Recalculate with the new variable
 ## Remove the density > 1.00
-win_data1 = win_data[win_data$density < 1.00,]
+win_data1 = win_data[win_data$density < 1.00, ]
 ## Remove extreme values of total sulfur dioxide
-win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300,]
+win_data2 = win_data1[win_data1$total.sulfur.dioxide < 300, ]
 ## Remove extreme values of free sulfur dioxide
-win_data3 = win_data2[win_data2$free.sulfur.dioxide < 300,]
+win_data3 = win_data2[win_data2$free.sulfur.dioxide < 300, ]
 ```
 
 
@@ -529,8 +529,8 @@ p1 = ggplot(aes(x = alcohol, y = density),  data = win_data1) +
         xlab("Alcohol %") +
         ggtitle("Alcohol % vs density", 
                 subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
+        theme(plot.title = element_text(size = 11, hjust = 0.5, face = "bold"),
+              axis.title = element_text(size = 10, hjust = 0.5))
 
 x = win_data1$residual.sugar
 y = win_data1$density
@@ -541,8 +541,8 @@ p2 = ggplot(aes(x = residual.sugar, y = density ), data = win_data1) +
         xlab("Residual sugar concentration (g/dm^3)") +
         ggtitle(" Residual sugar vs density", 
                 subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
+        theme(plot.title = element_text(size = 11, hjust = 0.5, face = "bold"),
+              axis.title = element_text(size = 10, hjust = 0.5))
 
 
 x = win_data2$total.sulfur.dioxide
@@ -555,8 +555,8 @@ p3 = ggplot(aes(x = total.sulfur.dioxide, y = density), data = win_data2) +
         ylab("Density (g/cm^3)") +
         ggtitle("Total sulfur dioxide vs density", 
                 subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+  
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
+        theme(plot.title = element_text(size = 11, hjust = 0.5, face = "bold"),
+              axis.title = element_text(size = 10, hjust = 0.5))
 
 y = win_data3$free.sulfur.dioxide 
 x = win_data3$total.sulfur.dioxide
@@ -568,8 +568,8 @@ p4 = ggplot(aes(x = total.sulfur.dioxide, y = free.sulfur.dioxide),
         ylab("Free sulfur dioxide (g/dm^3)") +
         ggtitle("Total vs free sulfur dioxide", 
                 subtitle = paste("R^2 = ", round(cor(x,y), digits = 2)))+ 
-        theme(plot.title = element_text(size=11, hjust=0.5, face = "bold"),
-              axis.title = element_text(size=10, hjust=0.5))
+        theme(plot.title = element_text(size = 11, hjust = 0.5, face = "bold"),
+              axis.title = element_text(size = 10, hjust = 0.5))
 
 grid.arrange(p1, p2, p3, p4, ncol = 2)
 
@@ -681,7 +681,7 @@ model, the validity of the model is confirmed.
 
 ```{r, echo = FALSE, multiple_linearr_regression1}
 ## getting parameters to validate the model
-par(mfrow =c(2,2))
+par(mfrow = c(2, 2))
 plot(fit)
 ```
 
@@ -701,9 +701,9 @@ coef2 =  3.233e-04
 coef3 = -1.192e-03
 
 
-win_data3$predict_density = win_data3$total.sulfur.dioxide*(coef1) +
-    win_data3$residual.sugar*(coef2) +
-    win_data3$alcohol*(coef3) +intercept
+win_data3$predict_density = win_data3$total.sulfur.dioxide * (coef1) +
+    win_data3$residual.sugar * (coef2) +
+    win_data3$alcohol * (coef3) + intercept
 
 
 ```
@@ -716,7 +716,7 @@ fit2 = lm(predict_density ~ density, data = win_data3)
 ggplot(aes(density , predict_density), data = win_data3) +
     geom_point(aes(color= Rank), alpha = 1/3, position =
                    position_jitter(h = 0)) +
-    geom_abline(intercept = coef(fit2)[1], slope = coef(fit2)[2], col='blue')+
+    geom_abline(intercept = coef(fit2)[1], slope = coef(fit2)[2], col='blue') +
     xlab("Density (g/cm^3)") +
     ylab("Predicted density (g/cm^3)") 
 
