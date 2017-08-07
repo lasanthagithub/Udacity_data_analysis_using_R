@@ -579,59 +579,7 @@ grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 
 The above four plots show, how the quality (Rank) of wine behave with different
-attributes. The observations of the plots are discussed below except for the 
-plot total vs free sulfur dioxide concentrations, due to absence of identifiable 
-patterns in that particular plot.
-
-
-### Final Plots and Summary
-
-In the final plot and summary section, the observations from the above sections
-are further discussed in detail. For this purpose, I have selected three 
-relationships from the multivariate section. In addition, a multiple linear 
-regression model was developed. The validity of the model also discussed.
-
-
-#### Behaviours of the quality of wines related to the changes of alcohol % and density
-
-
-```{r, echo = FALSE, Plot_One}
-## reprint the plot
-p1
-```
-
-
-Based on the data in the above plot, the data points corresponding to the 
-high quality (red color points) mainly clustered towards the bottom right side 
-of the plot. This behavior indicates the quality of wine is generally high when
-the alcohol percentage is high and density is low with a few exceptions. 
-
-#### Behaviours of the quality of wines related to the changes of residual sugar concentration and density 
-```{r, echo = FALSE, Plot_Two}
-## reprint the plot
-p2
-```
-
-
-In above plot, there is slight separation of high quality wines with the other 
-qualities. That arrangement of high quality data points suggest that in general 
-the quality of a wine type is high when the density and the residual sugar 
-concentrations are low with some exceptions.
-
-
-#### Behaviours of the quality of wines related to the changes of total sulfur dioxide concentration and density
-
-```{r, echo = FALSE, Plot_Three}
-## reprint the plot
-p3 
-
-```
-
-
-Similar to previous two plots, this plot also moderately differentiate high 
-quality wines with the others. Generally, the low density and somewhat sulfur 
-dioxide content (about 75 to 125 g/dm^3) give high quality wines.
-
+attributes. 
 
 #### Creating a Multiple linear regression model
 
@@ -730,6 +678,60 @@ different colors.Based on this model, the wine quality can be determined for
 most of the wines by their density. However, more detailed analysis and 
 classification such as machine learning techniques should be carried out to 
 improve the model and to increase the accuracy of the model. 
+
+
+
+
+### Final Plots and Summary
+
+In the final plot and summary section, the observations from the above sections
+are further discussed in detail. For this purpose, I have selected three 
+relationships from the multivariate section. In addition, a multiple linear 
+regression model was developed. The validity of the model also discussed.
+
+
+#### Behaviours of the quality of wines related to the changes of alcohol % and density
+
+
+```{r, echo = FALSE, Plot_One}
+## reprint the plot
+p1
+```
+
+
+Based on the data in the above plot, the data points corresponding to the 
+high quality (red color points) mainly clustered towards the bottom right side 
+of the plot. This behavior indicates the quality of wine is generally high when
+the alcohol percentage is high and density is low with a few exceptions. 
+
+#### Behaviours of the quality of wines related to the changes of residual sugar concentration and density 
+```{r, echo = FALSE, Plot_Two}
+## reprint the plot
+p2
+```
+
+
+In above plot, there is slight separation of high quality wines with the other 
+qualities. That arrangement of high quality data points suggest that in general 
+the quality of a wine type is high when the density and the residual sugar 
+concentrations are low with some exceptions.
+
+
+#### Behaviours of the quality of wines related to the changes of total sulfur dioxide concentration and density
+
+```{r, echo = FALSE, Plot_Three}
+## reprint the plot
+p3 
+
+```
+
+
+Similar to previous two plots, this plot also moderately differentiate high 
+quality wines with the others. Generally, the low density and somewhat sulfur 
+dioxide content (about 75 to 125 g/dm^3) give high quality wines.
+
+
+
 
 
 ### Reflection
